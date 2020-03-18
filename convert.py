@@ -1,4 +1,4 @@
-""""""
+"""Common Conversions and a bit of Digital Systems I"""
 #-*-coding:utf-8;-*-
 #dig = '0123456789abcdefghijklmnopqrstuvwxyz'
 from string import digits, ascii_uppercase
@@ -19,7 +19,7 @@ Converte um valor n para o sistema numérico b (entre 1 e 36 na lista padrão de
 		n = str(n[0]).lower()
 		
 	if type(n) == str:
-	#    m = 1
+	#	m = 1
 		c = e = 0
 		"""if neg in n:
 			m = -1"""
@@ -41,7 +41,7 @@ Converte um valor n para o sistema numérico b (entre 1 e 36 na lista padrão de
 	if b == None:
 		b = 2
 	elif b == 1:
-		return d[1]*n#int(n)
+		return d[1]*int(n)
 	c = ''
 	a = 1
 	if n < 0:
@@ -57,7 +57,7 @@ Converte um valor n para o sistema numérico b (entre 1 e 36 na lista padrão de
 		else:
 			c += '1'
 			n -= a"""
-		#    print (' -',a)
+		#	print (' -',a)
 		#c += d[int(n<a)]
 		e = b
 		while e > 0:
@@ -119,7 +119,7 @@ Por reflexão, constrói a lista de código Gray de l dígitos binários.
 	'''
 
 	g = list(d[:2])
-	while l > 0:
+	while l > 1:
 		c = len(g)
 		while c > 0:
 			c += -1
@@ -171,13 +171,12 @@ def roman (n,addonly=False):
 	if type(n) == str:
 		d = b = a = 0
 		for c in n.upper():
-			if from_roman[c] != a:
-				if from_roman[c] < a:
-					d += b
-					b = 0
-				elif not addonly:
-					b = -b
-				a = from_roman[c]
+			if from_roman[c] < a:
+				d += b
+				b = 0
+			elif from_roman[c] > a and not addonly:
+				b = -b
+			a = from_roman[c]
 			b += from_roman[c]
 		return d + b
 
