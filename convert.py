@@ -142,6 +142,39 @@ def check (n, test=0, count=1, b=2, get=dig):
 	n = str(n)
 	return n[0] == get[int(n[1:].count(str(count))%b!=test)]
 
+def bijective (n, b=10, d=dig, p='.', neg='-'):
+	"""
+	Converts the bijective base b numeral string to an integer value or an integer n to bijective base b numerals
+	Converte o número bijetivo (str) para int ou um inteiro positivo n para a sua representação bijetiva
+	"""
+	if type(n) != str:
+		r = ''
+		if n < 0:
+			n = -n
+		else:
+			neg = r
+		while n > 0:
+			a = n%b
+			n //= b
+			if a == 0:
+				n -= 1
+				r = d[b] + r
+			else:
+				r = d[a] + r
+		r = neg + r
+	else:
+		r = f = 0
+		for c in str(n).upper():
+			if c == p:
+				f = 1
+			else:
+				r = (r*b) + d.find(c)
+				f *= b
+	try:
+		return r/f
+	except ZeroDivisionError:
+		return r
+
 romans = 'mdclxvi'
 to_roman = {}
 from_roman = {}
@@ -192,9 +225,11 @@ def roman (n,addonly=False):
 		p -= 1
 	return r
 
-try:
-	while True:
+
+while __name__ == "__main__":
+	try:	
 		print(eval(input('>>>')))
-except Exception as ex:
-	print("<<<\n")
-	raise ex
+	except KeyboardInterrupt:
+		break
+	except Exception as ex:
+		print("<<<\n",ex)
