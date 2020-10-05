@@ -2,8 +2,8 @@ from convert import *
 
 sinal = 'menos','negativo','negative','minus','less'
 div = 'vírgula','virgula','ponto','point','dot'
-milhar = 'mil','thousand'
-centena = 'hundred'
+milhar = 'mil','milhar','thousand'
+centena = 'hundred','centos','centenas','centena'
 numerais = {1:{1: ('um','one'), 2: ('dois','two'), 3: ('três','tres','three'), 4:('quatro','four'), 5: ('cinco','five'), 
 6: ('seis','six'), 7:('sete','seven'), 8: ('oito','eight'), 9: ('nove','nine'), 10: ('dez','ten'), 
 11:('onze','eleven','endleofan'), 12:('doze','twelve','twelf'), 13:('treze','thirteen'), 14:('catorze','quatorze','qüatorze','fourteen'),
@@ -25,15 +25,15 @@ for d in numerais:
 
 def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,notteens=False,escolha=lambda pos:pos[0]):
 	if type(n) == str:
-		t = r = 0
+		f = t = r = 0
 		d = 0
 		inv = False
 		for n in n.lower().split():
 			try:
-				t += valores[n]
+				n = valores[n]
 			except KeyError:
 				try:
-					t += eval(n)
+					n = eval(n,valores)
 				except Exception:				
 					if n in mil:
 						if t == 0:
@@ -46,15 +46,24 @@ def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,nott
 						inv = not inv
 					elif n in div:
 						r += t
-						t = d
+						f = r
+						r = t = d #caso d != 0, haverá bug
 						d = 1
-		try:
-			while t/d >= 1:
+			#		else: 
+			#			print(n)
+					continue
+			if n == 0:
 				d *= 10
+			else:
+				t += n
+		r += t
+		try:
+			dec = d/d
+			while r/dec >= 1:
+				dec *= 10
 		except ZeroDivisionError:
-			d = 1
-		if t > 0:
-			r += t/d
+			d = dec = 1
+		r = f + r/(d*dec)
 		if inv:
 			return -r
 		return r
@@ -92,6 +101,7 @@ def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,nott
 		
 	return r
 	
+
 while __name__ == "__main__":
 	ln = input('>>')
 	try:	
