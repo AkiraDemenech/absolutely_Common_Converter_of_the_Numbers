@@ -1,1 +1,1 @@
-Conversões comuns e um pouco de Sistemas Digitais I
+Conversões comuns, letras minúsculas e um pouco de Sistemas Digitais I

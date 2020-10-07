@@ -23,6 +23,13 @@ for d in numerais:
 #numerais = {int:numerais,str:valores}
 #numerais[1].update(valores)
 
+def escala (n,d = 1,b = 10):
+	if d == 0:
+		return 1
+	while n >= d:
+		d *= b
+	return d
+
 def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,notteens=False,escolha=lambda pos:pos[0]):
 	if type(n) == str:
 		f = t = r = 0
@@ -41,13 +48,15 @@ def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,nott
 						r += 1000*t
 						t = 0
 					elif n in centena:
+						if t == 0:
+							t = 1
 						t *= 100
 					elif n in neg:
 						inv = not inv
 					elif n in div:
 						r += t
-						f = r
-						r = t = d #caso d != 0, haverá bug
+						f += r
+						r = t = 0 # caso já houvesse um ponto anterior, ele seria considerado mero caractere de formatação
 						d = 1
 			#		else: 
 			#			print(n)
@@ -58,9 +67,7 @@ def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,nott
 				t += n
 		r += t
 		try:
-			dec = d/d
-			while r/dec >= 1:
-				dec *= 10
+			dec = escala(r,d/d)
 		except ZeroDivisionError:
 			d = dec = 1
 		r = f + r/(d*dec)
