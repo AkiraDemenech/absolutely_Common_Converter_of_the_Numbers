@@ -44,8 +44,8 @@ def extenso (n=0,sep=' ',adic='e',frac=div,neg=sinal,mil=milhar,ummil=False,nott
 				except Exception:				
 					if n in mil:
 						if t == 0:
-							t = 1
-						r += 1000*t
+							t = 1	# mil = um mil
+						r += 1000*t	# mil mil = mil + mil, não se multiplica multiplicadores
 						t = 0
 					elif n in centena:
 						if t == 0:
