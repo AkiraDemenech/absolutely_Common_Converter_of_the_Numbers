@@ -12,10 +12,10 @@ def mmc (a,b=1):
 			m *= c
 			a /= c
 			b /= c
-	if abs(a) == 1:
-		return m*a
-	elif abs(b) == 1:
-		return m*b
+		while b%c == 0:
+			b /= c
+		while a%c == 0:
+			a /= c
 	return m
 
 def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, v = 0):
