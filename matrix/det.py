@@ -1,8 +1,22 @@
-mul = '·'
 
 from numpy import array
 
 ast = "*"
+mul = '·'
+
+def mmc (a,b=1):
+	m=c=1
+	while a >1 and b > 1:
+		c += 1 + abs(4 - (c&6))*(c%2)
+		while a%c == b%c == 0:
+			m *= c
+			a /= c
+			b /= c
+	if abs(a) == 1:
+		return m*a
+	elif abs(b) == 1:
+		return m*b
+	return m
 
 def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, v = 0):
 	if y == None:
@@ -52,7 +66,7 @@ def det (m, s = mul):
 	while a > 0:
 		a -= 1
 		c += '-'
-		d += ' %s ' %chr(8211)
+		d += ' – ' 
 		
 		b = 0
 		t = 1
