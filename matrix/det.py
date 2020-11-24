@@ -1,7 +1,10 @@
 mul = '·'
+
+from numpy import array
+
 ast = "*"
 
-def matriz (x = 4, y = None, e = lambda s='': eval(input(s)), r = None, v = 0):
+def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, v = 0):
 	if y == None:
 		y = x
 	if r == None:
@@ -17,6 +20,8 @@ def matriz (x = 4, y = None, e = lambda s='': eval(input(s)), r = None, v = 0):
 			r[j][i] = e()
 			i += 1
 		j += 1
+	if type(r) != t:
+		return t(r)
 	return r
 
 def det (m, s = mul):
@@ -31,7 +36,7 @@ def det (m, s = mul):
 		b = 0
 		while b < n:
 			if m[b][(a+b)%n] < 0:
-				v = '(%d)'%m[b][(a+b)%n]
+				v = '('+str(m[b][(a+b)%n])+')'
 				d += v
 			else:
 				v = str(m[b][(a+b)%n])
@@ -40,7 +45,7 @@ def det (m, s = mul):
 				d += v
 			t *= m[b][(a+b)%n]
 			if b > 0:
-				c += '*'
+				c += ast
 			c += v
 			b += 1
 		r += t
@@ -56,7 +61,7 @@ def det (m, s = mul):
 		while b < n:
 			t *= m[b][(a-b)%n]
 			if m[b][(a-b)%n] < 0:
-				v = '(%d)'%m[b][(a-b)%n]
+				v = '('+str(m[b][(a-b)%n])+')'
 				d += v
 			else:
 				v = str(m[b][(a-b)%n])
@@ -64,7 +69,7 @@ def det (m, s = mul):
 					d += s
 				d += v
 			if b > 0:
-				c += '*'
+				c += ast
 			c += v
 			b += 1
 		r -= t
