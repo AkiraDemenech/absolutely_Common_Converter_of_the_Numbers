@@ -35,14 +35,12 @@ def det (m, s = mul):
 		t = 1
 		b = 0
 		while b < n:
+			v = str(m[b][(a+b)%n])
 			if m[b][(a+b)%n] < 0:
-				v = '('+str(m[b][(a+b)%n])+')'
-				d += v
-			else:
-				v = str(m[b][(a+b)%n])
-				if b > 0:
-					d += s
-				d += v
+				v = '('+v+')'
+			elif b > 0:
+				d += s
+			d += v
 			t *= m[b][(a+b)%n]
 			if b > 0:
 				c += ast
@@ -60,17 +58,15 @@ def det (m, s = mul):
 		t = 1
 		while b < n:
 			t *= m[b][(a-b)%n]
+			v = str(m[b][(a-b)%n])
 			if m[b][(a-b)%n] < 0:
-				v = '('+str(m[b][(a-b)%n])+')'
-				d += v
-			else:
-				v = str(m[b][(a-b)%n])
-				if b > 0:
-					d += s
-				d += v
+				v = '('+v+')'
+			elif b > 0:
+				d += s
 			if b > 0:
 				c += ast
 			c += v
+			d += v
 			b += 1
 		r -= t
 		
