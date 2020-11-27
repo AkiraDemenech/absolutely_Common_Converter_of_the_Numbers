@@ -129,8 +129,9 @@ Por reflexão, constrói a lista de código Gray de l dígitos binários.
 	return g
 
 def jk (atual=False, prox = True, x = None):
+	''' retorna as entradas para a transição pedida num Flip Flop J-K '''
 	r = [x,x]
-	r[atual] = atual^prox
+	r[atual] = atual!=prox#atual^prox
 	return r
 
 def parity (n, test=0, count=1, b=2, add=dig):
