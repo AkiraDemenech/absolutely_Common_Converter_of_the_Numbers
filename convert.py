@@ -128,6 +128,11 @@ Por reflexão, constrói a lista de código Gray de l dígitos binários.
 		l -= 1
 	return g
 
+def jk (atual=False, prox = True, x = None):
+	r = [x,x]
+	r[atual] = atual^prox
+	return r
+
 def parity (n, test=0, count=1, b=2, add=dig):
 	"""	Adds the check bit of parity test (even by default), counting the count digit (one by default).
 	Adiciona o bit de paridade para resto test (0 por padrão), contando o dígito count (1 por padrão).

@@ -1,5 +1,6 @@
 
 from numpy import array
+from muldiv import mmc
 
 ast = "*"
 mul = '·'
