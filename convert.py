@@ -128,10 +128,16 @@ Por reflexão, constrói a lista de código Gray de l dígitos binários.
 		l -= 1
 	return g
 
-def jk (atual=False, prox = True, x = None):
-	''' retorna as entradas para a transição pedida num Flip Flop J-K '''
+def fftt (atual=False, prox = True, inativo=False, ativo=True, x = None, sr = True):
+	''' Retorna as entradas (se SR se sr = True, senão retorna JK) para a transição dada.
+		Considera irrelevante o argumento x e os valores dos argumentos ativo e inativo.
+	'''
 	r = [x,x]
-	r[atual] = atual!=prox#atual^prox
+	if atual!=prox:
+		r[atual^sr] = inativo
+		r[atual] = ativo
+	else:
+		r[atual] = inativo
 	return r
 
 def parity (n, test=0, count=1, b=2, add=dig):
