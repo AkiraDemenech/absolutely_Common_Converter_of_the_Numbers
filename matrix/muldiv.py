@@ -1,11 +1,19 @@
-
+q = '\t'
+falso = 0
+saída = 1 # por padrão, a saída de dados durante a execução das funções é permitida
+absolutely_no = lambda *args, **disagreements: args
+absolutely_any = absolutely_no, print
+escreva = lambda *coisas,**outras:absolutely_any[saída](*coisas,**outras)
+escreva('''Por padrão, a saída de dados durante a execução das funções é permitida.
+Caso queira desativar o print atribua 0 (zero), False (Falso) ou None (Nulo) para a variável “saída” (Case-sensitive):
+	saída = falso\n''',q)
 
 def mdcr (a,b=1):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando recursão subtrativa'''
 	if a >= b:
 		if b==0:
 			return a
-		print('mdc(%d,%d)'%(a,b))
+		escreva('mdc(%d,%d)'%(a,b))
 		return mdc(a-b,b)
 	return mdc(b,a)
 
@@ -14,7 +22,7 @@ def modc (a,b=1):
 	if a >= b:
 		if b==0:
 			return a
-		print('mdc(%d,%d)'%(a,b))
+		escreva('mdc(%d,%d)'%(a,b))
 		return modc(b,a%b)
 	return modc(b,a)
 
@@ -41,23 +49,31 @@ def mdc (*n,mod=True):
 			a %= b
 		else:
 			a -= b
-		print('mdc(%d,%d)'%(a,b))
+		escreva('mdc(%d,%d)'%(a,b))
 	
 def mmc (*n,fmdc=mdc):
-	'''Calcula o Mínimo Múltiplo Comum pelo Máximo Divisor Comum iterativo modular'''
+	'''Calcula o Mínimo Múltiplo Comum, por padrão, pelo Máximo Divisor Comum iterativo modular'''
 	"""m = 1
 	for p in n:
 		m *= p
 	return m//fmdc(*n)"""
 	try:
-		a,b = n
-		return a*b//fmdc(a,b)
-	except ValueError:
 		if len(n) < 2:
-			return ((0,)+n)[len(n)]
+			return n[0]
+		a,b = n
+		n = a*b/fmdc(a,b)
+		if n.is_integer():
+			n = int(n)
+	except AttributeError:
+		pass
+	except IndexError:
+		return
+	except ValueError:
 		return mmc(mmc(*n[:2]),mmc(*n[2:]))
+	return n	
 
 def divisores (n,t=set):
+	'''Procura os divisores e retorna, por padrão, um conjunto set()'''
 	if n == 0:
 		return t()
 	try:
@@ -89,7 +105,7 @@ def divisores (n,t=set):
 				s.sort()
 		d += 1
 		c += 1
-	print(c,'passos')
+	escreva(c,'passos')
 	if neg:
 		neg = []
 		for c in s:
@@ -101,6 +117,7 @@ def divisores (n,t=set):
 	return s
 
 def fatores (n,t=list):
+	'''Procura os fatores e os retorna, por padrão, numa lista list()'''
 	c = 0
 	d = e = 2
 	try:
@@ -143,7 +160,7 @@ def fatores (n,t=list):
 		except TypeError:
 			break
 		c+=1
-	print(c,'passos')
+	escreva(c,'passos')
 	if n!=1 or len(s)==0:
 		try:
 			s.append(n)
@@ -180,11 +197,11 @@ def primo (n):
 	n = abs(n)
 	while d <= n/d:
 		if n%d == 0:
-			print(c)
+			escreva(c)
 			return False
 		d += 1 + abs(4 - (d%6))*(d%2)
 		c += 1
-	print(c)
+	escreva(c)
 	return n>=2
 
 def composto (n):
@@ -202,15 +219,30 @@ def compor (p):
 	return r
 	
 def div (n,d=1):
-	return n//d,n%d
-
-while True:
+	d	=n/d
 	try:
-		q = input('\t')
+		if d.is_integer():
+			d = int(d)
+	except AttributeError:
+		pass
+	return d
+
+def escrever ():
+	global saída
+	saída = not saída
+	escreva('saída =',saída)
+	return saída	
+
+while __name__ == '__main__':
+	try:
+		res = input(q)
 		try:
-			print('RES=',eval(q))
+			res = eval(res)
 		except SyntaxError:
-			print('RES =',exec(q))
+			res = exec(res)
+			print('RES =', res)
+		else:
+			print('RES=',res)
 	except KeyboardInterrupt:
 		break
 	except Exception as e:
