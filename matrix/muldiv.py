@@ -1,6 +1,6 @@
 q = '\t'
-falso = 0
-saída = 1 # por padrão, a saída de dados durante a execução das funções é permitida
+saída = __name__ == '__main__' # quando este módulo é inicializado, por padrão, a saída de dados durante a execução das funções é permitida
+falso = not saída
 absolutely_no = lambda *args, **disagreements: args
 absolutely_any = absolutely_no, print
 escreva = lambda *coisas,**outras:absolutely_any[saída](*coisas,**outras)
@@ -168,7 +168,7 @@ def fatores (n,t=list):
 			s[n] = 1
 	return s
 
-#maior_quadrado 		= lambda n,d=1:
+#maior_quadrado		= lambda n,d=1:
 primeiro_quadrado	= lambda n,d=1:((n/d)+d)/2
 quadrado_divisor	= lambda n: {(primeiro_quadrado(n,d),d) for d in divisores(n)}
 intdifquad	= lambda n: [(type(a),type(b)) for a,b in difquad(n)].count((int,int))
@@ -218,8 +218,8 @@ def compor (p):
 			r *= f
 	return r
 	
-def div (n,d=1):
-	d	=n/d
+def div (n, d = 1):
+	d = n / d
 	try:
 		if d.is_integer():
 			d = int(d)
@@ -227,9 +227,12 @@ def div (n,d=1):
 		pass
 	return d
 
-def escrever ():
+def escrever (novo_valor = -1):
 	global saída
-	saída = not saída
+	if novo_valor < 0:
+		saída = not saída
+	else:
+		saída = novo_valor
 	escreva('saída =',saída)
 	return saída	
 
