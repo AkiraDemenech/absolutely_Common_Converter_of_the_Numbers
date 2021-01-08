@@ -236,17 +236,20 @@ def escrever (novo_valor = -1):
 	escreva('saída =',saída)
 	return saída	
 
-while __name__ == '__main__':
-	try:
-		res = input(q)
+def linha (b = True):
+	while b:
 		try:
-			res = eval(res)
-		except SyntaxError:
-			res = exec(res)
-			print('RES =', res)
-		else:
-			print('RES=',res)
-	except KeyboardInterrupt:
-		break
-	except Exception as e:
-		print('ERR:',e)
+			res = input(q)
+			try:
+				res = eval(res)
+			except SyntaxError:
+				res = exec(res)
+				print('RES =', res)
+			else:
+				print('RES=',res)
+		except KeyboardInterrupt:
+			break
+		except Exception as e:
+			print('ERR:',e)
+			
+linha(saída)

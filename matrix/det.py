@@ -50,37 +50,39 @@ def dif (m, v = 0):
 		c += 1
 	return c
 
-escrever()
 def escalonar (m):
 	escalonada = []
 	c = 0
 	while c < len(m):
-		escalonada.append([dif(m[c]),list(m[c]),c])
-	#	escalonada[c].insert(0,dif(m[c]))
+		escalonada.append([dif(m[c]),list(m[c]),c,array(m[c])])
+		escalonada[c].insert(1,escalonada[c][1].count(0))
 		c += 1
+	c = 1
+	d = 0	# índice da posição do  primeiro elemento diferente de zero da linha na lista
+	lis = 2	# índice da lista
+	arr = len(escalonada[c]) - 1 #	índice da linha da matriz na lista
 	escalonada.sort()
-	while c > 0:
-		c += -1
-		escalonada[c].append(array(m[escalonada[c].pop()]))
-		arr = len(escalonada[c])-1 
 	while c < len(escalonada):
-		while escalonada[c][0] < c:
+		while escalonada[c][d] < c:
 			b = 0
-			while escalonada[c][0] != escalonada[b][0]:
+			while escalonada[c][d] != escalonada[b][d]:
 				b += 1
 				b += b == c
 			if b >= len(escalonada):
 				break
-			k = mmc(escalonada[c][arr][escalonada[c][0]],escalonada[b][arr][escalonada[b][0]])
-			escalonada[c][arr] *= div(k,escalonada[c][arr][escalonada[c][0]])
-			if escalonada[c][arr][escalonada[c][0]] > 0:
+			k = mmc(escalonada[c][arr][escalonada[c][d]],escalonada[b][arr][escalonada[b][d]])
+			escalonada[c][arr] *= div(k,escalonada[c][arr][escalonada[c][d]])
+			if escalonada[c][arr][escalonada[c][d]] > 0:
 				k = -k
-			escalonada[c][arr] += div(k,escalonada[b][arr][escalonada[b][0]])*escalonada[b][arr]
+			escalonada[c][arr] += div(k,escalonada[b][arr][escalonada[b][d]])*escalonada[b][arr]
+			print(c,*escalonada[c][arr],mdc(*escalonada[c][arr]))
 			escalonada[c][arr] //= mdc(*escalonada[c][arr])
-			escalonada[c][1].clear()
-			escalonada[c][1].extend(escalonada[c][arr])
-			escalonada[c][0] = dif(escalonada[c][arr])
-		c += 1
+			escalonada[c][lis].clear()
+			escalonada[c][lis].extend(escalonada[c][arr])
+			escalonada[c][1] = escalonada[c][lis].count(0)
+			escalonada[c][d] = dif(escalonada[c][lis])
+		escalonada.sort()
+		c += escalonada[c][d] >= c
 	return array([c[arr] for c in escalonada])
 
 while __name__ == '__main__':
