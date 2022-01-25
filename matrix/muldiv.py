@@ -5,8 +5,7 @@ absolutely_no = lambda *args, **disagreements: args
 absolutely_any = absolutely_no, print
 escreva = lambda *coisas,**outras:absolutely_any[saída](*coisas,**outras)
 escreva('''Por padrão, a saída de dados durante a execução das funções é permitida.
-Caso queira desativar o print atribua 0 (zero), False (Falso) ou None (Nulo) para a variável “saída” (Case-sensitive):
-	saída = falso\n''',q)
+Caso queira desativar/ativar o print utilize a função escrever()\n''',q)
 
 def mdcr (a,b=1):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando recursão subtrativa'''
