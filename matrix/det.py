@@ -19,8 +19,11 @@ def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, 
 		while len(r[j]) < x:
 			r[j].append(v)
 		while i < x:
-			r[j][i] = e('[%d,%d] = '%(i+1,j+1))
-			i += 1
+			try:
+				r[j][i] = e('[%d,%d] = '%(j,i))
+				i += 1
+			except Exception:	
+				continue
 		j += 1
 	if type(r) != t:
 		return t(r)
@@ -34,55 +37,81 @@ def dif (m, v = 0):
 		c += 1
 	return c
 
+def determinante (x):
+
+	det = True
+	d = escalonar(x)
+
+	for i in range(len(d)):
+		if i < len(d[i]):
+			det *= d[i][i]
+		#	print(det,d[i][i])
+		else:	
+			return False 
+	return det		
+det = determinante	
+def inteiro (f):
+	try:
+		if f.is_integer():
+			return int(f)
+	except AttributeError:		
+		pass
+	return f	
+
 def somar (a, b, c = 1):	
 	for x in range(min(len(a), len(b))):
-		a[x] += c * b[x]				
+		a[x] += inteiro(c * b[x])				
+		
 	while len(a) < len(b): 				
-		a.append(b[len(a)]*c)	
+		a.append(inteiro(b[len(a)] * c))	
 	return a	
 
-def escalonar (m, t = array, v = print):
+def eliminar (m,a,b,c): 	
+	f = inteiro(m[a][c] / m[b][c])					
+	escreva(q + 'Subtrair',f,'vezes a linha', b, 'em', a)
+	escreva(m[a], '-=', f, '*', m[b])
+	escreva(somar(m[a], m[b], -f), '\n') 
+
+def escalonar (m, diag = False):
 	escalonada = [list(n) for n in m]
 	
-
+	
 	for ln in range(len(escalonada)): # para cada linha da matriz
 
-		if ln < len(escalonada[ln]) and escalonada[ln][ln] == 0:
-		#	se o elemento da diagonal, naquela linha, for 0
+		while ln < len(escalonada[ln]) and escalonada[ln][ln] == 0:
+		#	enquanto o elemento da diagonal, naquela linha, for 0
 
-			for n in range(len(escalonada)): # busca uma linha em que o elemento da mesma coluna não for 0
+			n = len(escalonada)
+			while n > 0: # busca uma linha em que o elemento da mesma coluna não for 0
+				n -= 1
 				if ln < len(escalonada[n]) and escalonada[n][ln] != 0:
-					escreva('\n\t','Somar linha',n,'na',ln)
+					escreva(q,'Somar linha',n,'na',ln)
 					escreva(escalonada[ln], '+=', escalonada[n])
 					somar(escalonada[ln], escalonada[n]) # e soma a linha encontrada na anterior					
-					escreva(escalonada[ln])
+					escreva(escalonada[ln], '\n')
 					break
+			else: # se não encontrar nenhum 	
+				break
 
-		for c in range(min(len(escalonada[ln]), ln)): # para cada coluna antes da diagonal principal 		
+			for c in range(ln): # para cada coluna antes da diagonal principal 		
 
-			if c < len(escalonada[c]) and escalonada[c][c] != 0 and escalonada[ln][c] != 0:
-				f = escalonada[ln][c] / escalonada[c][c]
-				if f.is_integer():
-					f = int(f)
-				escreva('\n\tSubtrair',f,'vezes a linha', c, 'em', ln)
-				escreva(escalonada[ln], '-=', f, '*', escalonada[c])
-				escreva(somar(escalonada[ln], escalonada[c], -f)) 
+				if c < len(escalonada[c]) and escalonada[c][c] != 0 and escalonada[ln][c] != 0:
+					eliminar(escalonada,ln,c,c)			
 
-				
+		for v in range((ln + 1) * (not diag),len(escalonada)): # para cada linha depois (ou para todas)			
 
+			if v != ln and len(escalonada[v]) > ln and escalonada[v][ln] != 0:
+				eliminar(escalonada,v,ln,ln)																
 
-
-
-
-	return t(escalonada)
+	return escalonada
 
 while __name__ == '__main__':
 	try:
-		res = input(q)
+		linha = input(q)
 		try:
-			res = eval(res)
+			res = eval(linha)			
 		except SyntaxError:
-			res = exec(res)
+			res = exec(linha)
 			if res != None:
 				print('RES =', res)
 		else:

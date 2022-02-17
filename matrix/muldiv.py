@@ -238,11 +238,11 @@ def escrever (novo_valor = -1):
 def linha (b = True):
 	while b:
 		try:
-			res = input(q)
+			e = input(q)
 			try:
-				res = eval(res)
+				res = eval(e)
 			except SyntaxError:
-				res = exec(res)
+				res = exec(e)
 				print('RES =', res)
 			else:
 				print('RES=',res)
