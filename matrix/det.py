@@ -2,8 +2,33 @@
 from numpy import array
 from muldiv import mmc,mdc,div, escreva,escrever,q
 
-ast = "*"
-mul = '·'
+auto = False
+def auto_salvar (s = None):
+	global auto
+	if s == None:
+		s = not auto
+	auto = s	
+	escreva('Auto-salvar', q, auto)
+
+
+mem = 'res.log'
+def salvar (dados, arq = mem):
+	fechar = print
+	if type(arq) == str:
+		arq = open(arq,'w',encoding='utf8')
+		fechar = arq.close	
+	print(file = arq, end = repr(dados))	
+	fechar()
+
+def carregar (arq = mem):	
+	if type(arq) == str:
+		arq = open(arq,'r',encoding='utf8')
+		fechar = arq.close
+	else:	
+		fechar = print
+	dados = arq.read()
+	fechar()	
+	return eval(dados)
 
 
 def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, v = 0):
@@ -72,36 +97,51 @@ def eliminar (m,a,b,c):
 	escreva(m[a], '-=', f, '*', m[b])
 	escreva(somar(m[a], m[b], -f), '\n') 
 
-def escalonar (m, diag = False):
+def escalonar (m, diag = False, reduzir = False):
 	escalonada = [list(n) for n in m]
 	
-	
-	for ln in range(len(escalonada)): # para cada linha da matriz
+	cp = ln = 0
+	while ln < len(escalonada): # para cada linha da matriz
+		
 
-		while ln < len(escalonada[ln]) and escalonada[ln][ln] == 0:
-		#	enquanto o elemento da diagonal, naquela linha, for 0
+		while cp < len(escalonada[ln]) and escalonada[ln][cp] == 0:
+		#	enquanto o elemento do pivô, naquela linha, for 0
 
 			n = len(escalonada)
-			while n > 0: # busca uma linha em que o elemento da mesma coluna não for 0
+			while n > ln: # busca uma linha em que o elemento da mesma coluna não for 0
 				n -= 1
-				if ln < len(escalonada[n]) and escalonada[n][ln] != 0:
+				if ln < len(escalonada[n]) and escalonada[n][cp] != 0:
 					escreva(q,'Somar linha',n,'na',ln)
 					escreva(escalonada[ln], '+=', escalonada[n])
 					somar(escalonada[ln], escalonada[n]) # e soma a linha encontrada na anterior					
 					escreva(escalonada[ln], '\n')
 					break
 			else: # se não encontrar nenhum 	
+				cp += 1
+				continue
+			break
+		else:
+			if cp >= len(escalonada[ln]):
 				break
+			
 
-			for c in range(ln): # para cada coluna antes da diagonal principal 		
+		if ln != cp:
+			escreva('Pivô de',ln,'é',cp)		
+		
+		if reduzir:
+			c = len(escalonada[ln])
+			while c > cp:			
+				c -= 1
+				escalonada[ln][c] = inteiro(escalonada[ln][c] / escalonada[ln][cp])
 
-				if c < len(escalonada[c]) and escalonada[c][c] != 0 and escalonada[ln][c] != 0:
-					eliminar(escalonada,ln,c,c)			
-
+		
 		for v in range((ln + 1) * (not diag),len(escalonada)): # para cada linha depois (ou para todas)			
 
-			if v != ln and len(escalonada[v]) > ln and escalonada[v][ln] != 0:
-				eliminar(escalonada,v,ln,ln)																
+			if v != ln and len(escalonada[v]) > cp and escalonada[v][cp] != 0:
+				eliminar(escalonada,v,ln,cp)																
+
+		ln += 1		
+		cp += 1
 
 	return escalonada
 
@@ -111,11 +151,16 @@ while __name__ == '__main__':
 		try:
 			res = eval(linha)			
 		except SyntaxError:
-			res = exec(linha)
-			if res != None:
-				print('RES =', res)
+			r = exec(linha)
+			if r != None:
+				print('RES =', r)
+				res = r
+				continue
 		else:
 			print('RES='+str(res))
+		if auto:	
+			escreva('Auto-salvando....')
+			salvar(res)
 	except KeyboardInterrupt:
 		break
 	except Exception as e:
