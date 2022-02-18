@@ -1,6 +1,7 @@
 
 from numpy import array, matmul
 from muldiv import mmc,mdc,div, escreva,escrever,q
+from racional import frac
 
 auto = False
 def auto_salvar (s = None):
@@ -104,7 +105,7 @@ def eliminar (m,a,b,c):
 	return f
 
 def escalonar (m, diag = False, reduzir = False, fatores = None):
-	escalonada = [list(n) for n in m]
+	escalonada = [[frac(k) for k in n] for n in m]
 	
 	cp = ln = 0
 	while ln < len(escalonada): # para cada linha da matriz
@@ -132,13 +133,16 @@ def escalonar (m, diag = False, reduzir = False, fatores = None):
 			
 
 		if ln != cp:
-			escreva('Pivô de',ln,'é',cp)		
+			escreva('A coluna pivô da linha',ln,'é',cp)		
 		
 		if reduzir:
+			escreva(q,'Multiplicando linha',ln,'por',1/escalonada[ln][cp])
+			escreva(escalonada[ln],'*',1/escalonada[ln][cp])
 			c = len(escalonada[ln])
 			while c > cp:			
 				c -= 1
 				escalonada[ln][c] = inteiro(escalonada[ln][c] / escalonada[ln][cp])
+			escreva(escalonada[ln],'\n')	
 
 		
 		for v in range((ln + 1) * (not diag),len(escalonada)): # para cada linha depois (ou para todas)			
@@ -158,15 +162,39 @@ def lu (a):
 	f = {}	
 	u = array(escalonar(a, fatores = f))
 	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
+	'''
+	for p in f:
+		l[p[0]][p[1]] = f[p]
+		escreva(p,q,f[p],l[p[0]][p[1]])
+	'''	
 	return l, u	
 
-def inversa (a):	
-	i = mat(len(a), e = identidade, t = tuple)
+def lui (a):
+	f = {}
+	aum = aumentar(a)
+	esc = escalonar(aum, fatores = f)
+	u = array(esc)[:,:len(a)]
+	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
+	i = escalonar(esc,True,True)
+	return l,u,i
+
+
+def inversa (a):			
+	return array(escalonar(aumentar(a),True,True))[:,len(a):]		
+
+def aumentar (a, b = identidade):	
+	i = mat(len(a), e = b, t = tuple)
 	for l in range(len(a)):
 		for c in range(len(a[l])):
-			i[l].insert(c, a[l][c])
-	return array(escalonar(i,True,True))[:,len(a):]		
-	
+			i[l].insert(c, a[l][c])			
+	return i		
+
+def mostrar (a, d = 6):	
+	for ln in a:
+		for c in ln:
+			print(inteiro(round(c.real, d)),end=q)
+		print(q)	
+
 		
 
 

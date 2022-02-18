@@ -25,7 +25,7 @@ def modc (a,b=1):
 		return modc(b,a%b)
 	return modc(b,a)
 
-def mdc (*n,mod=True):
+def mdc (*n,mod=True,v=True):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando iteração'''
 	try:
 		if len(n) < 2:
@@ -48,7 +48,8 @@ def mdc (*n,mod=True):
 			a %= b
 		else:
 			a -= b
-		escreva('mdc(%d,%d)'%(a,b))
+		if v:	
+			escreva('mdc(%d,%d)'%(a,b))
 	
 def mmc (*n,fmdc=mdc):
 	'''Calcula o Mínimo Múltiplo Comum, por padrão, pelo Máximo Divisor Comum iterativo modular'''
