@@ -7,23 +7,25 @@ escreva = lambda *coisas,**outras:absolutely_any[saída](*coisas,**outras)
 escreva('''Por padrão, a saída de dados durante a execução das funções é permitida.
 Caso queira desativar/ativar o print utilize a função escrever()\n''',q)
 
-def mdcr (a,b=1):
+def mdcr (a,b=1,v=True):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando recursão subtrativa'''
 	if a >= b:
 		if b==0:
 			return a
-		escreva('mdc(%d,%d)'%(a,b))
+		if v:	
+			escreva('mdc(%d,%d)'%(a,b))
 		return mdc(a-b,b)
 	return mdc(b,a)
 
-def modc (a,b=1):
+def modc (a,b=1,v = True):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando recursão modular'''
 	if a >= b:
 		if b==0:
 			return a
-		escreva('mdc(%d,%d)'%(a,b))
-		return modc(b,a%b)
-	return modc(b,a)
+		if v:	
+			escreva('mdc(%d,%d)'%(a,b))
+		return modc(b,a%b,v)
+	return modc(b,a,v)
 
 def mdc (*n,mod=True,v=True):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando iteração'''
@@ -36,7 +38,7 @@ def mdc (*n,mod=True,v=True):
 		if b<0:
 			b = -b
 	except ValueError:
-		return mdc(mdc(*n[:2]),*n[2:])
+		return mdc(mdc(*n[:2]),*n[2:],mod=mod,v=v)
 	except IndexError:
 		return
 	while True:
@@ -51,7 +53,7 @@ def mdc (*n,mod=True,v=True):
 		if v:	
 			escreva('mdc(%d,%d)'%(a,b))
 	
-def mmc (*n,fmdc=mdc):
+def mmc (*n,fmdc=mdc,v=True):
 	'''Calcula o Mínimo Múltiplo Comum, por padrão, pelo Máximo Divisor Comum iterativo modular'''
 	"""m = 1
 	for p in n:
@@ -61,7 +63,7 @@ def mmc (*n,fmdc=mdc):
 		if len(n) < 2:
 			return n[0]
 		a,b = n
-		n = a*b/fmdc(a,b)
+		n = a*b/fmdc(a,b,v=v)
 		if n.is_integer():
 			n = int(n)
 	except AttributeError:
@@ -69,7 +71,7 @@ def mmc (*n,fmdc=mdc):
 	except IndexError:
 		return
 	except ValueError:
-		return mmc(mmc(*n[:2]),mmc(*n[2:]))
+		return mmc(mmc(*n[:2],fmdc=fmdc,v=v),mmc(*n[2:],fmdc=fmdc,v=v))
 	return n	
 
 def divisores (n,t=set):

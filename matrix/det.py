@@ -175,8 +175,8 @@ def lui (a):
 	esc = escalonar(aum, fatores = f)
 	u = array(esc)[:,:len(a)]
 	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
-	i = escalonar(esc,True,True)
-	return l,u,i
+	i = escalonar(escalonar(esc,False,True),True)
+	return l,u,array(i)
 
 
 def inversa (a):			

@@ -40,7 +40,7 @@ class frac:
 	
 	def __add__ (self, parcela):	
 		parcela = frac(parcela)
-		d = muldiv.mmc(parcela.den, self.den)
+		d = muldiv.mmc(parcela.den, self.den, v = False)
 		return frac((d * self.num // self.den) + (parcela.num * d // parcela.den), d)
 		
 
