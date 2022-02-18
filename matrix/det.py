@@ -1,5 +1,5 @@
 
-from numpy import array
+from numpy import array, matmul
 from muldiv import mmc,mdc,div, escreva,escrever,q
 
 auto = False
@@ -10,14 +10,15 @@ def auto_salvar (s = None):
 	auto = s	
 	escreva('Auto-salvar', q, auto)
 
-
+identidade = lambda j,i: int(i == j)
+entrar = lambda y,x: eval(input(f'[{y},{x}] = '))
 mem = 'res.log'
 def salvar (dados, arq = mem):
 	fechar = print
 	if type(arq) == str:
 		arq = open(arq,'w',encoding='utf8')
 		fechar = arq.close	
-	print(file = arq, end = repr(dados))	
+	print(repr(dados).encode(), file = arq)	
 	fechar()
 
 def carregar (arq = mem):	
@@ -28,10 +29,14 @@ def carregar (arq = mem):
 		fechar = print
 	dados = arq.read()
 	fechar()	
-	return eval(dados)
+	while True:
+		dados = eval(dados)
+		if type(dados) != bytes:
+			return dados
+		dados = dados.decode()	
 
 
-def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, v = 0):
+def mat (x = 4, y = None, e = entrar, t = array, r = None, v = 0):
 	if y == None:
 		y = x
 	if r == None:
@@ -45,7 +50,7 @@ def mat (x = 4, y = None, e = lambda s='': eval(input(s)), t = array, r = None, 
 			r[j].append(v)
 		while i < x:
 			try:
-				r[j][i] = e('[%d,%d] = '%(j,i))
+				r[j][i] = e(j,i)
 				i += 1
 			except Exception:	
 				continue
@@ -96,8 +101,9 @@ def eliminar (m,a,b,c):
 	escreva(q + 'Subtrair',f,'vezes a linha', b, 'em', a)
 	escreva(m[a], '-=', f, '*', m[b])
 	escreva(somar(m[a], m[b], -f), '\n') 
+	return f
 
-def escalonar (m, diag = False, reduzir = False):
+def escalonar (m, diag = False, reduzir = False, fatores = None):
 	escalonada = [list(n) for n in m]
 	
 	cp = ln = 0
@@ -138,12 +144,33 @@ def escalonar (m, diag = False, reduzir = False):
 		for v in range((ln + 1) * (not diag),len(escalonada)): # para cada linha depois (ou para todas)			
 
 			if v != ln and len(escalonada[v]) > cp and escalonada[v][cp] != 0:
-				eliminar(escalonada,v,ln,cp)																
+				m = eliminar(escalonada,v,ln,cp)																
+				if fatores != None:
+					fatores[(v,cp)] = m 
+				#	escreva([v,cp],m)
 
 		ln += 1		
 		cp += 1
 
 	return escalonada
+
+def lu (a):	
+	f = {}	
+	u = array(escalonar(a, fatores = f))
+	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
+	return l, u	
+
+def inversa (a):	
+	i = mat(len(a), e = identidade, t = tuple)
+	for l in range(len(a)):
+		for c in range(len(a[l])):
+			i[l].insert(c, a[l][c])
+	return array(escalonar(i,True,True))[:,len(a):]		
+	
+		
+
+
+
 
 while __name__ == '__main__':
 	try:
