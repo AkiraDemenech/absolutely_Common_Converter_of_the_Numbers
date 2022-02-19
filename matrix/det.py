@@ -156,6 +156,8 @@ def escalonar (m, diag = False, reduzir = False, fatores = None):
 		ln += 1		
 		cp += 1
 
+		escreva()
+
 	return escalonada
 
 def lu (a):	
@@ -176,7 +178,7 @@ def lui (a):
 	u = array(esc)[:,:len(a)]
 	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
 	i = escalonar(escalonar(esc,False,True),True)
-	return l,u,array(i)
+	return l,u,array(i)[:,len(a):]
 
 
 def inversa (a):			

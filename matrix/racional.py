@@ -9,31 +9,44 @@ class frac:
 		return False
 
 	
+	def as_integer_ratio (self):
+		return self.num, self.den
 
 	def __init__ (self, n, d = True):	
 		if type(n) == frac:
 			d *= n.den
 			n = n.num
 
-		if d < 0:
-			n = -n
-			d = -d
+		
 
 		if type(n) != float or n.is_integer():	
 			n = int(n)
+		else:	
+			a, b = n.as_integer_ratio()
+			n = a
+			d *= b
 
 		if type(d) != float or d.is_integer():	
 			d = int(d)
+		else:	
+			a, b = d.as_integer_ratio()
+			d = a
+			n *= b	
+
+		if d < 0:
+			n = -n
+			d = -d	
 
 		s = muldiv.mdc(n, d, v = False) 
 		if s > 1:
 			n //= s
 			d //= s
 
-		self.num = n
-		self.den = d
-		self.real = n/d
-		self.imag = self.real.imag
+		self.numerator = self.num = n
+		self.denominator = self.den = d
+		if d != 0:
+			self.real = n/d
+			self.imag = self.real.imag # se não for 0, complex teria causado erro em comparações e conversões anteriores já
 
 	def __abs__ (self):
 		return self.real.__abs__()
@@ -112,3 +125,4 @@ class frac:
 
 	def __repr__ (self):	
 		return f'frac({self.num}' + (f', {self.den}' * (self.den != 1)) + ')'
+
