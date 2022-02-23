@@ -8,7 +8,6 @@ class frac:
 	def is_integer (self):
 		return False
 
-	
 	def as_integer_ratio (self):
 		return self.num, self.den
 

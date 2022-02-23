@@ -9,66 +9,74 @@ def convert (n, b=None, d=dig.lower(), p='.', neg='-'):
 Converte um valor n para o sistema numérico b (entre 1 e 36 na lista padrão de dígitos alfanuméricos dig, para base binária se b não for informado), lendo e escrevendo p como o ponto flutuante e neg como a notação negativa;
 	A entrada n pode ser str e também contida em uma uma tupla optativamente adicionando o sistema numérico inicial e final.'''
 
+	f = 0
 	b0 = 10
-	if type(n) in (tuple,list):
-		if len(n) > 2 and b == None:
-			b  = n[2]
+	if type(n) in {tuple,list}:
 		if len(n) > 1:
+			if len(n) > 2 and b == None:
+				b  = n[2]		
 			b0 = n[1]
-		#else:
-		n = str(n[0]).lower()
+		elif len(n) <= 0:
+			return False
+		n = n[0]
+		if type(n) == str or b0 != 10:
+			n = str(n).lower()
 		
 	if type(n) == str:
-	#	m = 1
 		c = e = 0
-		"""if neg in n:
-			m = -1"""
 		for a in n.replace(neg,""):
 			if a == p:
 				e = 1
 				continue
 			e *= b0
 			c *= b0
-			c += d.find(a)#*m
-		if neg in n:
-			c *= -1#= -c
-		n = c
+			c += d.find(a)		
+		
 		if e != 0:
-			n /= e
+			f = (c % e) / e 
+			c //= e
+		if neg in n:
+			c = -c				
+			f *= -1
+		n = c	
+	else:		
+		f = abs(n) % 1	
+		n = int(n)
 	
+	c = neg * (f < 0 or n < 0)
 	if b == 10:
-		return n
+		return n + f
 	if b == None:
 		b = 2
 	elif b == 1:
-		return d[1]*int(n)
-	c = ''
+		return c + (d[1] * int(n))
+	
 	a = 1
-	if n < 0:
-		c = neg#'-'
-		n = -n
+	n = abs(n)
+	f = abs(f)		
 	while a < n:
 		a *= b
-	while n > 0 or a >= 1:
-		if a == 1/b:
-			c += p#'.'        
-		"""if n < a:
-			c += '0'
-		else:
-			c += '1'
-			n -= a"""
-		#	print (' -',a)
-		#c += d[int(n<a)]
+		
+	while n > 0 or f > 0 or a >= 1:
+		
+		
 		e = b
 		while e > 0:
 			e -= 1
-			if e*a <= n:
+			if e * a <= n:
 				n -= e*a
 				c += d[e]
-				e = 0
-		a /= b
-		if a == 0:
-			break
+				break
+		if a > 1:
+			a //= b
+		else:	
+			if a == 1:
+				c += p * (f > 0)        
+				n = f
+				f = 0
+			a /= b					
+			if a == 0:
+				break
 	return c
 
 def bcd (n,d=10):
@@ -78,6 +86,7 @@ Converte um valor n do sistema numérico d (decimal por padrão) para BCD ou uma
 	'''
 
 	if type(n) == str:
+		
 		c = b = 0
 		n = dig[0]*((4-(len(n)%4))%4) + n
 		while c < len(n):
@@ -160,6 +169,7 @@ def bijective (n, b=10, d=dig, p='.', neg='-'):
 	Converte o número bijetivo (str) para int ou um inteiro positivo n para a sua representação bijetiva
 	"""
 	if type(n) != str:
+		
 		r = ''
 		if n < 0:
 			n = -n
@@ -182,10 +192,9 @@ def bijective (n, b=10, d=dig, p='.', neg='-'):
 			else:
 				r = (r*b) + d.find(c)
 				f *= b
-	try:
-		return r/f
-	except ZeroDivisionError:
-		return r
+		if f != 0:		
+			return r/f
+	return r
 
 romans = 'mdclxvi'
 to_roman = {}
@@ -210,7 +219,9 @@ romans.sort()
 def roman (n,addonly=False):
 	"""
 	Converts the string of Roman numerals to an integer value or an integer n to Roman numerals, ignoring subtractive notation if addonly=True;
+	The Roman to integer conversion supports some alternative notations.
 	Converte o número romano (str) para int ou um inteiro positivo n para a sua representação romana, ignorando a subtração quando addonly=True;
+	A conversão para inteiro suporta algumas notações romanas alternativas.
 	"""
 
 	if type(n) == str:
