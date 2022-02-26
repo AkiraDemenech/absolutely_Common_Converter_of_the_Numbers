@@ -180,6 +180,30 @@ def lui (a):
 	i = escalonar(escalonar(esc,False,True),True)
 	return l,u,array(i)[:,len(a):]
 
+def cholesky (a):	
+	g = []
+	while len(g) < len(a): 
+		h = []
+		while len(h) < len(a[len(g)]):
+			d = a[len(g)][len(h)]
+			if len(h) == len(g):				
+				for c in range(len(h)):
+					d -= h[c] ** 2 
+				h.append(inteiro(d ** 0.5))	
+			elif len(h) < len(g): 					
+				for c in range(len(h)):
+					d -= h[c] * g[len(h)][c]
+				h.append(inteiro(d / g[len(h)][len(h)]))	
+			else:		
+				h.append(0)
+		g.append(h)
+
+	g[0][0] = inteiro(a[0][0] ** 0.5)
+
+
+
+	return g
+
 
 def inversa (a):			
 	return array(escalonar(aumentar(a),True,True))[:,len(a):]		
@@ -200,6 +224,38 @@ def mostrar (a, d = 6):
 		
 
 
+def simetria (m):		
+	
+	for i in range(len(m) - 1):
+		for j in range(i + 1, len(m[i])):
+			if m[i][j] != m[j][i]:
+				return False
+	return True	
+
+def triangular (m):
+	l = u = True
+	for i in range(len(m)):
+		for j in range(len(m[i])):
+			if m[i][j]:
+				if i > j:
+					if not l:
+						return None 
+					u = False	
+				elif i < j:	
+					if not u:
+						return None
+					l = False								  
+	return u - l				 
+def diagonal (a):
+	return triangular(a) == 0
+
+def triangular_superior (a):
+	return triangular(a) in {0,1}
+
+def triangular_inferior (a):
+	return triangular(a) in {0,-1}
+
+   	
 
 
 while __name__ == '__main__':
