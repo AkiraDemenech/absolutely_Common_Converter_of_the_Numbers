@@ -180,6 +180,29 @@ def lui (a):
 	i = escalonar(escalonar(esc,False,True),True)
 	return l,u,array(i)[:,len(a):]
 
+def ld (a):	
+
+	l = mat(len(a), e = identidade, t = list)
+	d = mat(len(a), e = identidade, t = list) 
+
+	for i in range(len(a)):
+
+		d[i][i] = (0 if len(a[i]) <= i else a[i][i])
+		for j in range(i):
+			d[i][i] -= ( l[i][j] ** 2 ) * d[j][j]					
+
+		for j in range(i + 1, min(len(a[i]), len(a))):
+			c = 0 if j >= len(a) or i >= len(a[j]) else a[j][i]
+			
+			for k in range(i):
+				c -= l[j][k] * l[i][k] * d[k][k] 	
+
+			l[j][i] = inteiro(c / d[i][i])
+
+	return l, d
+
+
+
 def cholesky (a):	
 	g = []
 	z = frac(0)
