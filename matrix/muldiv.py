@@ -63,9 +63,7 @@ def mmc (*n,fmdc=mdc,v=True):
 		if len(n) < 2:
 			return n[0]
 		a,b = n
-		n = a*b/fmdc(a,b,v=v)
-		if n.is_integer():
-			n = int(n)
+		n = a*b//fmdc(a,b,v=v)		
 	except AttributeError:
 		pass
 	except IndexError:

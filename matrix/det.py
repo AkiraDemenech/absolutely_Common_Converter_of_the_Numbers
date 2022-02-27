@@ -45,16 +45,16 @@ def mat (x = 4, y = None, e = entrar, t = array, r = None, v = 0):
 	while len(r) < y:
 		r.append([])
 	j = 0
-	while j < y:
-		i = 0
-		while len(r[j]) < x:
-			r[j].append(v)
-		while i < x:
+	while j < y:				
+		while len(r[j]) < x:			
 			try:
-				r[j][i] = e(j,i)
-				i += 1
+				r[j].append(e(j,len(r[j])))				
+			except TypeError:
+				if len(e) > j and len(e[j]) > len(r[j]):
+					r[j].append(e[j][len(r[j])])	
+					x = len(e[j])
 			except Exception:	
-				continue
+				continue			
 		j += 1
 	if type(r) != t:
 		return t(r)
@@ -182,10 +182,11 @@ def lui (a):
 
 def cholesky (a):	
 	g = []
+	z = frac(0)
 	while len(g) < len(a): 
 		h = []
 		while len(h) < len(a[len(g)]):
-			d = a[len(g)][len(h)]
+			d = frac(a[len(g)][len(h)])
 			if len(h) == len(g):				
 				for c in range(len(h)):
 					d -= h[c] ** 2 
@@ -195,7 +196,7 @@ def cholesky (a):
 					d -= h[c] * g[len(h)][c]
 				h.append(inteiro(d / g[len(h)][len(h)]))	
 			else:		
-				h.append(0)
+				h.append(z)
 		g.append(h)
 
 	g[0][0] = inteiro(a[0][0] ** 0.5)
@@ -203,6 +204,16 @@ def cholesky (a):
 
 
 	return g
+
+
+def transposta (m): 
+	t = []	
+	for l in range(len(m)):	
+		for c in range(len(m[l])):
+			while len(t) <= c:
+				t.append([0]*l)					
+			t[c].append(m[l][c])
+	return t			
 
 
 def inversa (a):			
@@ -256,6 +267,20 @@ def triangular_inferior (a):
 	return triangular(a) in {0,-1}
 
    	
+def resolver (a, b):   	
+	m = escalonar(aumentar(a, b),True,True)
+	n = 0
+	for l in a:
+		if len(l) > n:
+			n = len(l)
+	s = []
+	for l in m:		
+		if len(l) > n:
+			s.append(l[n:])
+		else:	
+			s.append(l[:-1])
+	return s		
+
 
 
 while __name__ == '__main__':
@@ -278,3 +303,4 @@ while __name__ == '__main__':
 		break
 	except Exception as e:
 		print('ERRO:',e)
+		err = e
