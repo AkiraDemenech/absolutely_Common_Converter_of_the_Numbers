@@ -104,8 +104,11 @@ def eliminar (m,a,b,c):
 	escreva(somar(m[a], m[b], -f), '\n') 
 	return f
 
-def escalonar (m, diag = False, reduzir = False, fatores = None):
-	escalonada = [[frac(k) for k in n] for n in m]
+def escalonar (m, diag = False, reduzir = False, fatores = None, formato = None):
+	if formato == None:
+		formato = frac
+	escalonada = [[formato(k) for k in n] for n in m]
+	
 	
 	cp = ln = 0
 	while ln < len(escalonada): # para cada linha da matriz
@@ -164,12 +167,9 @@ def lu (a):
 	f = {}	
 	u = array(escalonar(a, fatores = f))
 	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
-	'''
-	for p in f:
-		l[p[0]][p[1]] = f[p]
-		escreva(p,q,f[p],l[p[0]][p[1]])
-	'''	
 	return l, u	
+
+
 
 def lui (a):
 	f = {}
@@ -177,17 +177,17 @@ def lui (a):
 	esc = escalonar(aum, fatores = f)
 	u = array(esc)[:,:len(a)]
 	l = mat(len(a), e = lambda y,x: identidade(y,x) if not (y,x) in f else f[(y,x)])
-	i = escalonar(escalonar(esc,False,True),True)
+	i = escalonar(esc, True, True)
 	return l,u,array(i)[:,len(a):]
 
-def ld (a):	
+def ld (a, formato = frac):	
 
 	l = mat(len(a), e = identidade, t = list)
 	d = mat(len(a), e = identidade, t = list) 
 
 	for i in range(len(a)):
 
-		d[i][i] = (0 if len(a[i]) <= i else a[i][i])
+		d[i][i] = formato(0 if len(a[i]) <= i else a[i][i])
 		for j in range(i):
 			d[i][i] -= ( l[i][j] ** 2 ) * d[j][j]					
 
@@ -203,26 +203,26 @@ def ld (a):
 
 
 
-def cholesky (a):	
+def cholesky (a, formato = inteiro):	
 	g = []
-	z = frac(0)
+	z = formato(0)
 	while len(g) < len(a): 
 		h = []
 		while len(h) < len(a[len(g)]):
-			d = frac(a[len(g)][len(h)])
+			d = formato(a[len(g)][len(h)])
 			if len(h) == len(g):				
 				for c in range(len(h)):
 					d -= h[c] ** 2 
-				h.append(inteiro(d ** 0.5))	
+				h.append(formato(d ** 0.5))	
 			elif len(h) < len(g): 					
 				for c in range(len(h)):
 					d -= h[c] * g[len(h)][c]
-				h.append(inteiro(d / g[len(h)][len(h)]))	
+				h.append(formato(d / g[len(h)][len(h)]))	
 			else:		
 				h.append(z)
 		g.append(h)
 
-	g[0][0] = inteiro(a[0][0] ** 0.5)
+	g[0][0] = formato(a[0][0] ** 0.5)
 
 
 
@@ -290,8 +290,8 @@ def triangular_inferior (a):
 	return triangular(a) in {0,-1}
 
    	
-def resolver (a, b):   	
-	m = escalonar(aumentar(a, b),True,True)
+def resolver (a, b, formato = None):   	
+	m = escalonar(aumentar(a, b),True,True,formato = formato)
 	n = 0
 	for l in a:
 		if len(l) > n:

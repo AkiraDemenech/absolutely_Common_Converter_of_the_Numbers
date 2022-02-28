@@ -23,12 +23,13 @@ for e,r in (a,b,c,d):
 	mostrar(g)
 
 	print('\ny')
-	y = resolver(g,r)
+	y = resolver(g,r,inteiro)
 #	y = [[y[0].real] for y in resolver(g,r)]
+#	print(y)
 	mostrar(y)
 
 	print('\nx\t/ Por escalonamento:')
-	x = aumentar(resolver(transposta(g),y),resolver(e,r))
+	x = aumentar(resolver(transposta(g),y,inteiro),resolver(e,r,inteiro))
 	mostrar(x)
 
 
