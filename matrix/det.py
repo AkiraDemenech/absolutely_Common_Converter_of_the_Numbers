@@ -255,9 +255,6 @@ def mostrar (a, d = 6):
 			print(inteiro(round(c.real, d)),end=q)
 		print(q)	
 
-		
-
-
 def simetria (m):		
 	
 	for i in range(len(m) - 1):
@@ -289,7 +286,6 @@ def triangular_superior (a):
 def triangular_inferior (a):
 	return triangular(a) in {0,-1}
 
-   	
 def resolver (a, b, formato = None):   	
 	m = escalonar(aumentar(a, b),True,True,formato = formato)
 	n = 0

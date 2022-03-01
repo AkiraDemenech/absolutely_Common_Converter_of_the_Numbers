@@ -29,14 +29,17 @@ for A,B in (a,b,c,d):
 
 	print('\nz')
 	z = resolver(L,B)
+	# como L já está escalonada, a resolução só precisa reduzir as linhas até a matriz virar a identidade
 	mostrar(z)
 
 	print('\ny')
 	y = resolver(D,z)
+	# sendo uma matriz diagonal, a única coisa que é feita para resolvê-la é dividir todas as linhas pelos seus pivôs
 	mostrar(y)
 
 	print('\nx\t/ Por escalonamento:')
 	x = aumentar(resolver(transposta(L),y),resolver(A,B))
+	# como L já está escalonada, a resolução só precisa reduzir as linhas até a matriz virar a identidade
 	mostrar(x)
 
 
