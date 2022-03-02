@@ -229,6 +229,56 @@ def cholesky (a, formato = inteiro):
 	return g
 
 
+def thomas (m, d, formato = frac):
+
+	a, b, c = diagonais(m, 3)
+
+	gama = []
+	beta = []
+
+	ag = ab = 0
+	for k in range(len(m)):					
+		
+		beta.append([formato(formato((0 if len(d[k]) <= 0 else d[k][0]) - ab) / formato(b[k] - ag))])
+		if k < len(m) - 1:
+			gama.append(formato(c[k] / formato(b[k] - ag)))	
+			ab = a[k + 1] * beta[k][0]
+			ag = a[k + 1] * gama[k]
+
+	print(gama, beta)		
+			
+	while k > 0:
+		k -= 1
+
+		beta[k][0] -= beta[k + 1][0] * gama[k]
+
+	return beta	
+
+
+
+
+def diagonais (m, diam = True):
+
+	diag = [[0] * len(m) for s in range(diam)]
+	raio = len(diag) // 2
+	
+	for i in range(len(m)):
+
+		for j in range(len(m[i])):
+
+			if abs(i - j) <= raio:
+
+				diag[raio + j - i][i] = m[i][j]
+
+	return diag			
+
+ 
+
+	
+
+
+
+
 def transposta (m): 
 	t = []	
 	for l in range(len(m)):	
@@ -277,8 +327,14 @@ def triangular (m):
 						return None
 					l = False								  
 	return u - l				 
-def diagonal (a):
-	return triangular(a) == 0
+def diagonal (a, diam = True):
+	raio = abs(diam)//2
+	for i in range(len(a)):
+		for j in range(len(a[i])):
+			if a[i][j] and abs(i - j) > raio:
+				return False
+	return True			
+
 
 def triangular_superior (a):
 	return triangular(a) in {0,1}
