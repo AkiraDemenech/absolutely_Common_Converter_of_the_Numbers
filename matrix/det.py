@@ -14,7 +14,10 @@ def auto_salvar (s = None):
 identidade = lambda j,i: int(i == j)
 entrar = lambda y,x: eval(input(f'[{y},{x}] = '))
 mem = 'res.log'
+res_salvo = None
 def salvar (dados, arq = mem):
+	global res_salvo
+	res_salvo = dados
 	fechar = print
 	if type(arq) == str:
 		arq = open(arq,'w',encoding='utf8')
@@ -33,6 +36,8 @@ def carregar (arq = mem):
 	while True:
 		dados = eval(dados)
 		if type(dados) != bytes:
+			global res_salvo
+			res_salvo = dados
 			return dados
 		dados = dados.decode()	
 
@@ -241,18 +246,19 @@ def thomas (m, d, formato = frac):
 		
 		beta.append([formato(formato((0 if len(d[k]) <= 0 else d[k][0]) - ab) / formato(b[k] - ag))])
 		if k < len(m) - 1:
-			gama.append(formato(c[k] / formato(b[k] - ag)))	
+			gama.append([formato(c[k] / formato(b[k] - ag))])	
 			ab = a[k + 1] * beta[k][0]
-			ag = a[k + 1] * gama[k]
+			ag = a[k + 1] * gama[k][0]
 
-	print(gama, beta)		
+	x = [None] * len(beta)		
+	x[-1] = list(beta[-1])
 			
 	while k > 0:
 		k -= 1
 
-		beta[k][0] -= beta[k + 1][0] * gama[k]
+		x[k] = [beta[k][0] - x[k + 1][0] * gama[k][0]]
 
-	return beta	
+	return x, beta, gama	
 
 
 
@@ -370,7 +376,7 @@ while __name__ == '__main__':
 				res = r
 				continue
 		else:
-			print('RES='+str(res))
+			print('RES='+(repr(res) if type(res) == str else str(res)))
 		if auto:	
 			escreva('Auto-salvando....')
 			salvar(res)
