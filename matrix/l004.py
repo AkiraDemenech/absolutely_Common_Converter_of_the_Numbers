@@ -3,7 +3,7 @@ from det import *
 a = carregar('l41a'), carregar('l41ad')
 b = carregar('l41b'), carregar('l41bd')
 c = carregar('l41c'), carregar('l41cd')
-d = carregar('l41c'), carregar('l41dd')
+d = carregar('l41d'), carregar('l41dd')
 
 escrever(False)
 
@@ -30,9 +30,9 @@ for A,B in (a,b,c,d):
 a = carregar('l42a'), carregar('l42ab')
 b = carregar('l42b'), carregar('l42bb')
 c = carregar('l42c'), carregar('l42cb')
-d = carregar('l42c'), carregar('l42db')
+d = carregar('l42d'), carregar('l42db')
 
-
+input('Enter qualquer tecla para continuar.... ')
 
 for A,B in (a, b, c, d):
 
