@@ -260,7 +260,26 @@ def thomas (m, d, formato = frac):
 
 	return x, beta, gama	
 
-def jacobi (a, b, formato = frac, aprox = 10, inicial = False):
+def seidel (a, b, x_0, x_1, i): 
+	
+
+	if len(b) <= i or len(a) <= i or len(a[i]) <= i or a[i][i] == 0:
+		return False
+
+	p = 0 if not len(b[i]) else b[i][0]
+
+	for j in range(i):
+		p -= a[i][j] * x_1[j]
+
+	for j in range(i + 1, len(a[i])):	
+		p -= a[i][j] * x_0[j]
+
+	return p / a[i][i]
+
+
+jacobi = lambda a, b, x_0, x_1, i: seidel(a,b,x_0,x_0,i)
+
+def gauss (a, b, met = seidel, formato = inteiro, aprox = 10, inicial = False):
 
 	x_ = [formato(inicial)] * len(a)
 	x = list(x_)
@@ -268,16 +287,9 @@ def jacobi (a, b, formato = frac, aprox = 10, inicial = False):
 	while aprox != 0:
 		aprox -= 1
 	
-		for i in range(len(a)):
+		for i in range(len(a)):								
 
-			p = b[i][0]
-
-			for j in range(len(a[i])):
-
-				if i != j:
-					p -= a[i][j] * x_[j]
-
-			x[i] = formato(p / a[i][i])		
+			x[i] = formato(met(a, b, x_, x, i))		
 
 		escreva(x_)
 		x_ = list(x)
