@@ -27,7 +27,31 @@ for A,B in (a,b,c,d):
 	mostrar(aumentar(x, resolver(A, B)))
 	print(x)
 
+a = carregar('l42a'), carregar('l42ab')
+b = carregar('l42b'), carregar('l42bb')
+c = carregar('l42c'), carregar('l42cb')
+d = carregar('l42c'), carregar('l42db')
 
+
+
+for A,B in (a, b, c, d):
+
+	escrever(True)
+
+	print('\n\nMatriz:')
+	mostrar(A)
+	mostrar(B)
+
+	print('\nJacobi')
+	mostrar(gauss(A,B,jacobi))
+
+	print('\nSeidel')
+	mostrar(gauss(A, B))
+
+	escrever(False)
+
+	print('\npor escalonamento')
+	mostrar(resolver(A, B))
 
 	
 
