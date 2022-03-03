@@ -5,6 +5,7 @@ b = carregar('l41b'), carregar('l41bd')
 c = carregar('l41c'), carregar('l41cd')
 d = carregar('l41c'), carregar('l41dd')
 
+escrever(False)
 
 for A,B in (a,b,c,d):
 

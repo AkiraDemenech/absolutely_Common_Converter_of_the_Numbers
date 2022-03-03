@@ -260,6 +260,29 @@ def thomas (m, d, formato = frac):
 
 	return x, beta, gama	
 
+def jacobi (a, b, formato = frac, aprox = 10, inicial = False):
+
+	x_ = [formato(inicial)] * len(a)
+	x = list(x_)
+
+	while aprox != 0:
+		aprox -= 1
+	
+		for i in range(len(a)):
+
+			p = b[i][0]
+
+			for j in range(len(a[i])):
+
+				if i != j:
+					p -= a[i][j] * x_[j]
+
+			x[i] = formato(p / a[i][i])		
+
+		escreva(x_)
+		x_ = list(x)
+
+	return [[s] for s in x]	
 
 
 
