@@ -291,7 +291,7 @@ def gauss (a, b, met = seidel, formato = inteiro, aprox = 10, inicial = False):
 
 			x[i] = formato(met(a, b, x_, x, i))		
 
-		escreva(x_)
+		mostrar_vetor(x_)
 		x_ = list(x)
 
 	return [[s] for s in x]	
@@ -340,11 +340,15 @@ def aumentar (a, b = identidade):
 			i[l].insert(c, a[l][c])			
 	return i		
 
-def mostrar (a, d = 6):	
+def mostrar_vetor (v, d = 6, func = escreva): 
+	for u in v:
+		s = str(inteiro(round(u.real, d))) #'%.6f' % round(u.real, d) #
+		func(s, (len(s) <= d) * (d - len(s) + 1) * ' ', end = q) 		
+	func(q)	
+
+def mostrar (a, d = 6, f = print):	
 	for ln in a:
-		for c in ln:
-			print(inteiro(round(c.real, d)),end=q)
-		print(q)	
+		mostrar_vetor(ln, d, f)	
 
 def simetria (m):		
 	
@@ -374,6 +378,15 @@ def diagonal (a, diam = True):
 		for j in range(len(a[i])):
 			if a[i][j] and abs(i - j) > raio:
 				return False
+	return True			
+
+def diagonalmente_dominante (a):	
+	for i in range(len(a)):
+		s = False
+		for j in range(len(a[i])):						
+			s += abs(a[i][j]) * ((2 * (i == j)) - 1)	
+		if s <= 0:
+			return False
 	return True			
 
 
