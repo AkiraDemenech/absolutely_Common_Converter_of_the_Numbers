@@ -44,7 +44,9 @@ class frac:
 		self.numerator = self.num = n
 		self.denominator = self.den = d
 		if d != 0:
-			self.real = n/d
+			self.real = n
+			if d > 1:
+				self.real /= d
 			self.imag = self.real.imag # se não for 0, complex teria causado erro em comparações e conversões anteriores já
 
 	def __abs__ (self):

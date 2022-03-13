@@ -1,6 +1,6 @@
 
 from numpy import array, matmul
-from muldiv import mmc,mdc,div, escreva,escrever,q
+from muldiv import mmc,mdc,div, inteiro, escreva,escrever,q
 from racional import frac
 
 auto = False
@@ -86,13 +86,7 @@ def determinante (x):
 			return False 
 	return det		
 det = determinante	
-def inteiro (f):
-	try:
-		if f.is_integer():
-			return int(f)
-	except AttributeError:		
-		pass
-	return f	
+	
 
 def somar (a, b, c = 1):	
 	for x in range(min(len(a), len(b))):

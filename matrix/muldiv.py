@@ -7,6 +7,14 @@ escreva = lambda *coisas,**outras:absolutely_any[saída](*coisas,**outras)
 escreva('''Por padrão, a saída de dados durante a execução das funções é permitida.
 Caso queira desativar/ativar o print utilize a função escrever()\n''',q)
 
+def inteiro (f):
+	try:
+		if f.is_integer():
+			return int(f)
+	except AttributeError:		
+		pass
+	return f
+
 def mdcr (a,b=1,v=True):
 	'''Calcula o Máximo Divisor Comum pelo algoritmo de Euclides usando recursão subtrativa'''
 	if a >= b:
@@ -167,6 +175,15 @@ def fatores (n,t=list):
 		except AttributeError:
 			s[n] = 1
 	return s
+
+def fatorial (n, k = False, semi = True, t = inteiro):
+	'''Calcula o fatorial de n, dividido pelo fatorial de k. Se semi > 1, calcula o semifatorial
+	'''
+	f = 1
+	while n > k:
+		f = t(f * n)
+		n -= semi 
+	return f
 
 #maior_quadrado		= lambda n,d=1:
 primeiro_quadrado	= lambda n,d=1:((n/d)+d)/2
