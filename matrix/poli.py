@@ -69,7 +69,7 @@ def div (p, q, formato = racional.frac):
 		if p[g]:			 
 			e = g - h
 			d[e] = formato(p[g] / q[h])
-			p = sub(p, mul(q, {e: d[e]}, formato), formato)
+			p = soma(p, mul(q, {e: -d[e]}, formato), formato)
 
 
 		g -= 1
@@ -135,7 +135,7 @@ def sinais (coef):
 
 	return t		
 
-def inverter (coef):	
+def inverter (coef, paridade = 1):	
 
 	c = False
 	d = grau(coef) + 1
@@ -143,7 +143,7 @@ def inverter (coef):
 
 	while c < d:
 		try:
-			invertido[c] = coef[c] * (1 - (2 * (c % 2)))
+			invertido[c] = coef[c] * (1 - (2 * (c % 2 == paridade)))
 		except KeyError:				
 			if type(invertido) != dict:
 				inv = {}
@@ -189,6 +189,36 @@ def huat (coef, k = None):
 		n = False
 
 	return n <= m	
+
+def laguerre (coef, formato = racional.frac):
+
+	m = -1
+	d = [0, 1]
+	
+	try:
+		while True:
+
+			d[0] = m
+
+			q,r = div(coef, d, formato)
+
+			racional.muldiv.escreva(m, q, r)
+
+			for e in q:
+				if q[e] < 0:
+					break
+			else:	
+				if r[0] > 0:
+					return -m
+
+			m -= 1	
+	except KeyboardInterrupt:		
+		return False # 0 significa que não foi encontrada cota superior para as raízes positivas
+	
+	
+
+def laguerre_thibault (p, formato = racional.muldiv.inteiro):
+	return laguerre(p, formato), -laguerre(inverter(p, 0), formato)
 
 while __name__ == '__main__':
 	print(eval(input()))
