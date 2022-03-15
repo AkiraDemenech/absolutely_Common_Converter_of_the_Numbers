@@ -90,9 +90,3 @@ def huat (coef, k = None):
 
 	return n <= m	
 
-a = [-2, -9, 3, -5, 1]
-print(huat(a), descartes(a))
-b = [7, -5, 2, -3, 6, 1]
-print(huat(b), descartes(b))
-c = {0: 11, 1: -13, 2: 5, 4: 6, 5: -8, 6: 1}
-print(huat(c), descartes(c))
