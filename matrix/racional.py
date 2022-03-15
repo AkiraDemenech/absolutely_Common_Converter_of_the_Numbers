@@ -19,6 +19,8 @@ class frac:
 		
 
 		if type(n) != float or n.is_integer():	
+			if n == None:
+				n = False
 			n = int(n)
 		else:	
 			a, b = n.as_integer_ratio()
@@ -26,6 +28,8 @@ class frac:
 			d *= b
 
 		if type(d) != float or d.is_integer():	
+			if d == None:
+				d = True
 			d = int(d)
 		else:	
 			a, b = d.as_integer_ratio()

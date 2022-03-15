@@ -12,7 +12,8 @@ def inteiro (f):
 		if f.is_integer():
 			return int(f)
 	except AttributeError:		
-		pass
+		if f == None:
+			return 0
 	return f
 
 def mdcr (a,b=1,v=True):

@@ -12,4 +12,3 @@ for p in a,b,c:
 	if h != None:
 		print('Huat:\tk =',h,'\t',p[h],'^ 2 <=',p[h-1],'*',p[h+1])
 
-		
