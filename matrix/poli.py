@@ -15,6 +15,26 @@ def f (coef, x):
 	return y
 
 
+			
+
+def coeficientes (coef):
+
+	d = len(coef)
+	c = 0
+	b = []
+
+	while c < d:
+
+		try:
+			b.append(coef[c])
+		except KeyError:	
+			b.append(0)
+			d = max(coef) + 1
+
+		c += 1
+
+	return b	
+
 def sinais (coef):
 
 	d = len(coef)
