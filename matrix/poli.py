@@ -206,10 +206,13 @@ def laguerre (coef, formato = racional.frac):
 
 			for e in q:
 				if q[e] < 0:
-					break
+					if e < max(q):
+						break
+					return False # nunca será possível encontrar cota se o coeficiente de maior grau for negativo
 			else:	
 				if r[0] > 0:
 					return -m
+					
 
 			m -= 1	
 	except KeyboardInterrupt:		
@@ -259,7 +262,7 @@ def raio_complexo (coef, formato = racional.muldiv.inteiro):
 		q[a] = formato(q[a] ** (1 / n))
 		n -= 1
 
-		racional.muldiv.escreva(a)
+		racional.muldiv.escreva(a, racional.muldiv.q, q[a])
 
 	return q
 
