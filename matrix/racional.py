@@ -131,3 +131,5 @@ class frac:
 	def __repr__ (self):	
 		return f'frac({self.num}' + (f', {self.den}' * (self.den != 1)) + ')'
 
+	def __bool__ (self):
+		return self.num != 0

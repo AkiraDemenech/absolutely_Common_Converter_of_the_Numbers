@@ -13,4 +13,9 @@ for p in a,b,c:
 	if h != None:
 		print('Huat:\tk =',h,'\t',p[h],'^ 2 <=',p[h-1],'*',p[h+1])
 
+	input('cotas')	
 	print('Laguerre-Thibault:\traízes entre %d e %d' %laguerre_thibault(p))	
+	print('Fujiwara:\tvalor absoluto máximo de',fujiwara(p))
+	q = kojima(p)
+	print('Kojima:\tvalor absoluto máximo de', q[0] + q[1], '=', q[1], '+', q[0])
+

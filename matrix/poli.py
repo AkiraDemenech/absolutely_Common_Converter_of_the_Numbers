@@ -220,5 +220,32 @@ def laguerre (coef, formato = racional.frac):
 def laguerre_thibault (p, formato = racional.muldiv.inteiro):
 	return laguerre(p, formato), -laguerre(inverter(p, 0), formato)
 
+def kojima (p, formato = racional.muldiv.inteiro):	
+	
+	q = raio_complexo(p, formato)
+	q.sort()
+
+	return q[-2:]
+
+def fujiwara (p, formato = racional.muldiv.inteiro):			
+
+	return 2 * max(raio_complexo(p, formato))
+
+def raio_complexo (coef, formato = racional.muldiv.inteiro):	
+
+	coef = coeficientes(coef, formato)
+	n = grau(coef)
+	q = []
+
+	for a in range(n):
+		a = formato(abs(coef[a] / coef[-1]) ** (1 / n))
+		q.append(a)
+		n -= 1
+
+		racional.muldiv.escreva(a)
+
+	return q
+
+
 while __name__ == '__main__':
 	print(eval(input()))
