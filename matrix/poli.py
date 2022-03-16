@@ -202,7 +202,7 @@ def laguerre (coef, formato = racional.frac):
 
 			q,r = div(coef, d, formato)
 
-			racional.muldiv.escreva(m, q, r)
+			racional.muldiv.escreva(m, racional.muldiv.q, q, racional.muldiv.q, r)
 
 			for e in q:
 				if q[e] < 0:
@@ -231,20 +231,39 @@ def fujiwara (p, formato = racional.muldiv.inteiro):
 
 	return 2 * max(raio_complexo(p, formato))
 
-def raio_complexo (coef, formato = racional.muldiv.inteiro):	
+def cauchy (p, k = 10):	
+
+	n = grau(p)
+	p = cotas(p)
+	x = 0
+
+	for i in range(k):
+		racional.muldiv.escreva(i, racional.muldiv.q, x)
+		x = f(p, x) ** (1 / n)
+
+	return x
+
+def cotas (coef, formato = racional.muldiv.inteiro):
 
 	coef = coeficientes(coef, formato)
-	n = grau(coef)
-	q = []
+	
+	return [formato(abs(coef[a] / coef[-1])) for a in range(grau(coef))]
+		
 
-	for a in range(n):
-		a = formato(abs(coef[a] / coef[-1]) ** (1 / n))
-		q.append(a)
+def raio_complexo (coef, formato = racional.muldiv.inteiro):	
+
+	q = cotas(coef, formato)
+	n = len(q)
+
+	for a in range(len(q)):
+		q[a] = formato(q[a] ** (1 / n))
 		n -= 1
 
 		racional.muldiv.escreva(a)
 
 	return q
+
+
 
 
 while __name__ == '__main__':

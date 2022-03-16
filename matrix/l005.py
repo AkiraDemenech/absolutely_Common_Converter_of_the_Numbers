@@ -4,6 +4,7 @@ a = [-2, -9, 3, -5, 1]
 b = [7, -5, 2, -3, 6, 1]
 c = coeficientes({0: 11, 1: -13, 2: 5, 4: 6, 5: -8, 6: 1})
 
+racional.muldiv.escrever(True)
 
 for p in a,b,c:
 
@@ -12,10 +13,10 @@ for p in a,b,c:
 	h = huat(p)
 	if h != None:
 		print('Huat:\tk =',h,'\t',p[h],'^ 2 <=',p[h-1],'*',p[h+1])
-
 	input('cotas')	
 	print('Laguerre-Thibault:\traízes entre %d e %d' %laguerre_thibault(p))	
 	print('Fujiwara:\tvalor absoluto máximo de',fujiwara(p))
 	q = kojima(p)
 	print('Kojima:\tvalor absoluto máximo de', q[0] + q[1], '=', q[1], '+', q[0])
+	print('Cauchy:\tvalor absoluto máximo de', cauchy(p))
 
