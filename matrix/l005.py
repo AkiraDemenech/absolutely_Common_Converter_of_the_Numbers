@@ -27,6 +27,7 @@ for p in a,b,c:
 		racional.muldiv.escreva(a, racional.muldiv.q, f(p, a))
 		a += 1
 
+	input('Próximo....')
 
 
 
