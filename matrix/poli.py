@@ -135,7 +135,7 @@ def sinais (coef):
 
 	return t		
 
-def inverter (coef, paridade = 1):	
+def inverter (coef, mod = True, freq = 2):	
 
 	c = False
 	d = grau(coef) + 1
@@ -143,7 +143,7 @@ def inverter (coef, paridade = 1):
 
 	while c < d:
 		try:
-			invertido[c] = coef[c] * (1 - (2 * (c % 2 == paridade)))
+			invertido[c] = coef[c] * (1 - (2 * (c % freq == mod)))
 		except KeyError:				
 			if type(invertido) != dict:
 				inv = {}
@@ -221,7 +221,12 @@ def laguerre (coef, formato = racional.frac):
 	
 
 def laguerre_thibault (p, formato = racional.muldiv.inteiro):
-	return laguerre(p, formato), -laguerre(inverter(p, 0), formato)
+	g = grau(p)
+	if g <= 0:
+		return False, False
+	if p[g] < 0:	
+		p = mult(p, -1)
+	return laguerre(p, formato), -laguerre(inverter(p, not (g % 2)), formato)
 
 def kojima (p, formato = racional.muldiv.inteiro):	
 	
