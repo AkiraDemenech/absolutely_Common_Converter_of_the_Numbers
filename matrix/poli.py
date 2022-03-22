@@ -17,6 +17,19 @@ def f (coef, x):
 
 	return y
 
+def df (p):	
+	d = {}
+	for c in range(1, 1 + grau(p)):		
+		try:
+			b = p[c] * c
+			if b:
+				d[c - 1] = b 
+		except KeyError:	
+			continue
+	return d
+		
+	
+
 def soma (a, b, formato = racional.muldiv.inteiro):
 
 	a = coeficientes(a, formato)
@@ -239,11 +252,11 @@ def fujiwara (p, formato = racional.muldiv.inteiro):
 
 	return 2 * max(raio_complexo(p, formato))
 
-def cauchy (p, k = 10):	
+def cauchy (p, x = 0, k = 10):	
 
 	n = grau(p)
 	p = cotas(p)
-	x = 0
+	
 
 	for i in range(k):
 		racional.muldiv.escreva(i, racional.muldiv.q, x)
@@ -271,6 +284,16 @@ def raio_complexo (coef, formato = racional.muldiv.inteiro):
 
 	return q
 
+
+def newton_raphson (coef, x = 0, k = 10):
+
+	d = df(coef)
+
+	for i in range(k):
+		racional.muldiv.escreva(i, racional.muldiv.q, x)
+		x -= f(coef, x) / f(d, x)
+
+	return x	
 
 
 
