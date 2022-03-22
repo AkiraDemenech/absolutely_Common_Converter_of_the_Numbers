@@ -284,6 +284,18 @@ def raio_complexo (coef, formato = racional.muldiv.inteiro):
 
 	return q
 
+def chebyshev (coef, x = 0, k = 10):
+
+	d_ = df(coef)
+	d__ = df(d_)
+
+	for i in range(k):
+		racional.muldiv.escreva(i, racional.muldiv.q, x)
+		d1 = f(d_, x)
+		d = f(coef, x) / d1
+		x -= d + d * d * f(d__, x) / (2 * d1)
+
+	return x
 
 def newton_raphson (coef, x = 0, k = 10):
 
