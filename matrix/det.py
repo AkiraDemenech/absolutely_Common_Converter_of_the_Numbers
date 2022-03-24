@@ -13,33 +13,7 @@ def auto_salvar (s = None):
 
 identidade = lambda j,i: int(i == j)
 entrar = lambda y,x: eval(input(f'[{y},{x}] = '))
-mem = 'res.log'
-res_salvo = None
-def salvar (dados, arq = mem):
-	global res_salvo
-	res_salvo = dados
-	fechar = print
-	if type(arq) == str:
-		arq = open(arq,'w',encoding='utf8')
-		fechar = arq.close	
-	print(repr(dados).encode(), file = arq)	
-	fechar()
-
-def carregar (arq = mem):	
-	if type(arq) == str:
-		arq = open(arq,'r',encoding='utf8')
-		fechar = arq.close
-	else:	
-		fechar = print
-	dados = arq.read()
-	fechar()	
-	while True:
-		dados = eval(dados)
-		if type(dados) != bytes:
-			global res_salvo
-			res_salvo = dados
-			return dados
-		dados = dados.decode()	
+	
 
 
 def mat (x = 4, y = None, e = entrar, t = array, r = None, v = 0):

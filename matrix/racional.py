@@ -133,3 +133,6 @@ class frac:
 
 	def __bool__ (self):
 		return self.num != 0
+
+	def __hash__ (self):	
+		return self.real.__hash__()

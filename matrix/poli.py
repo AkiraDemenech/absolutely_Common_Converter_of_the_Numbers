@@ -19,7 +19,7 @@ def f (coef, x):
 
 def df (p):	
 	d = {}
-	for c in range(1, 1 + grau(p)):		
+	for c in resumir(p):		
 		try:
 			b = p[c] * c
 			if b:
@@ -103,7 +103,18 @@ def grau (p):
 			g = max(p) + 1
 		h += 1	
 	return m		
-			
+
+
+def resumir (coef):
+	if type(coef) == dict:
+		return dict(coef)
+
+	r = {}
+	for c in range(len(coef)):	
+		if coef[c]:	
+			r[c] = coef[c]
+	return r		
+
 
 def coeficientes (coef, formato = racional.frac):
 
@@ -127,6 +138,8 @@ def coeficientes (coef, formato = racional.frac):
 		c += 1
 
 	return b	
+
+
 
 def sinais (coef):
 
@@ -308,6 +321,24 @@ def newton_raphson (coef, x = 0, k = 10):
 	return x	
 
 
-
+hist = []
 while __name__ == '__main__':
-	print(eval(input()))
+	try:
+		linha = input(racional.muldiv.q)
+		try:
+			res = eval(linha)			
+		except SyntaxError:
+			r = exec(linha)
+			if r == None:
+				continue
+			print('RES =', r)
+			res = r
+				
+		else:
+			print('RES='+(repr(res) if type(res) == str else str(res)))		
+		hist.append(res)
+	except KeyboardInterrupt:
+		break
+	except Exception as e:
+		print('ERRO:',e)
+		err = e
