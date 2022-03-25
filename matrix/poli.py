@@ -321,6 +321,7 @@ def newton_raphson (coef, x = 0, k = 10):
 	return x	
 
 
+
 hist = []
 while __name__ == '__main__':
 	try:
