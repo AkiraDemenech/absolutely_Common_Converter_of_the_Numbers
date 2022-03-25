@@ -23,7 +23,10 @@ def converge (p, x, min = 5, max = 10, met = poli.newton_raphson):
 
 
 '''
+a = numpy.array([[[0, 100, 200], [0, 50, 100], [0, 25, 50]], [[255, 144, 33], [121, 125, 127], [0, 1, 2]], [[1, 2, 3], [10, 20, 30], [100, 200, 300%255]]])
 
+pyplot.imshow(a)
+pyplot.show()
 '''
 
 polinomio = [10,20,30]
