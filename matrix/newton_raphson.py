@@ -22,17 +22,18 @@ def converge (p, x, min = 5, max = 10, met = poli.newton_raphson):
 	return x, True	
 
 
+'''
 
 '''
 
-polinomio = [-1,2,-4,8]
+polinomio = [10,20,30]
 
 a_max = 2 * poli.fujiwara(polinomio)
 b_max = a_max * 1j
 b_min = -b_max
 a_min = -a_max
 
-px_d = 2048 # largura (diâmetro) da imagem, em pixels 
+px_d = 4096 # largura (diâmetro) da imagem, em pixels 
 a_step = poli.racional.frac(2 * a_max, px_d).real
 b_step = a_step * 1j
 # unidades por pixel
@@ -75,8 +76,7 @@ pyplot.imshow(c)
 pyplot.show()
 
 from PIL import Image
-nome = ''
-sinal = ''
+nome = sinal = ''
 for a in polinomio:
 	if a > 0:
 		nome += sinal
