@@ -297,26 +297,24 @@ def raio_complexo (coef, formato = racional.muldiv.inteiro):
 
 	return q
 
-def chebyshev (coef, x = 0, k = 10):
+def chebyshev (x, p, d_, d__):
 
-	d_ = df(coef)
-	d__ = df(d_)
+	d1 = f(d_, x)
+	d = f(p, x) / d1
 
-	for i in range(k):
-		racional.muldiv.escreva(i, racional.muldiv.q, x)
-		d1 = f(d_, x)
-		d = f(coef, x) / d1
-		x -= d + d * d * f(d__, x) / (2 * d1)
+	return d + d * d * f(d__, x) / (2 * d1)
 
-	return x
+newton = lambda x, p, d, d2 = None: f(p, x) / f(d, x)
 
-def newton_raphson (coef, x = 0, k = 10):
+def newton_raphson (coef, x = 0, k = 10, met = newton):
 
-	d = df(coef)
+	d1 = df(coef)
+	d2 = df(d1)
+
 
 	for i in range(k):
 		racional.muldiv.escreva(i, racional.muldiv.q, x)
-		x -= f(coef, x) / f(d, x)
+		x -= met(x,coef,d1,d2)
 
 	return x	
 

@@ -4,21 +4,33 @@ from matplotlib import pyplot
 import numpy
 import poli
 
-def converge (p, x, min = 5, max = 10, met = poli.newton_raphson):
+steps_min = 5
+steps_max = 10
 
-	x = met(p,x,min)
+step_white = steps_max - 1
+
+def converge (p, d1p, d2p, x, min = steps_min, max = steps_max, met = poli.newton):
+
 	d = 0
-	dif = None
-
+	for i in range(min):
+		d_ = met(x,p,d1p,d2p)
+		x -= d_	
+		d_ = abs(d_)
+		dif = abs(d - d_)
+		d = d_
+		
+		
+	x_ = x
 	for i in range(min,max):
-		x_ = met(p,x,1)
+		x_ -= met(x,p,d1p,d2p)
 		d_ = abs(x_ - x)		
 		dif_ = abs(d_ - d) 		
-		if dif != None and dif_ > dif:
+		if dif_ > dif:
 			return x_, False, i
 
 		x = x_		
-		dif = dif_	
+		d = d_
+		dif = dif_			
 	return x, True	
 
 
@@ -29,7 +41,9 @@ pyplot.imshow(a)
 pyplot.show()
 '''
 
-polinomio = [10,20,30]
+polinomio = [-1,2,-4,8]
+derivada_1 = poli.df(polinomio)
+derivada_2 = poli.df(derivada_1)
 
 a_max = 2 * poli.fujiwara(polinomio)
 b_max = a_max * 1j
@@ -61,12 +75,12 @@ while len(c) < px_d:
 
 	#	z = 
 		
-		res = converge(polinomio, a + b)
+		res = converge(polinomio, derivada_1, derivada_2, a + b)
 
 		
 		
 		
-		linha.append(preto if res[1] else ([numpy.uint8(255 * res[2] // 9)]) * 3)
+		linha.append(preto if res[1] else ([numpy.uint8(255 * res[2] // step_white)]) * 3)
 
 		a += a_step
 	b += b_step
