@@ -1,6 +1,7 @@
 
 
 from matplotlib import pyplot
+from PIL import Image
 import numpy
 import poli
 
@@ -41,64 +42,74 @@ pyplot.imshow(a)
 pyplot.show()
 '''
 
-polinomio = [-1,2,-4,8]
-derivada_1 = poli.df(polinomio)
-derivada_2 = poli.df(derivada_1)
 
-a_max = 2 * poli.fujiwara(polinomio)
-b_max = a_max * 1j
-b_min = -b_max
-a_min = -a_max
+def fract (polinomio, px_d = 1024, escala = 2, raio = None, i = False, j = False):
+	derivada_1 = poli.df(polinomio)
+	derivada_2 = poli.df(derivada_1)
 
-px_d = 4096 # largura (diâmetro) da imagem, em pixels 
-a_step = poli.racional.frac(2 * a_max, px_d).real
-b_step = a_step * 1j
-# unidades por pixel
+	if raio == None:
+		raio = poli.fujiwara(polinomio)
+		poli.racional.muldiv.escreva('Raio de Fujiwara:\t',raio)
+	a_max = escala * raio
+	b_max = a_max * 1j
+	b_min = -b_max
+	a_min = -a_max
 
-print('Diâmetro de Fujiwara:\t',a_max)
-print('Resolução (px):\t',px_d)
-print(a_step, '/ 1px')
+	 
+	a_step = poli.racional.frac(2 * a_max, px_d).real
+	b_step = a_step * 1j
+	# unidades por pixel
 
-preto = [numpy.uint8(0)] * 3
+	# deslocamento do enquadramento
+	b_min += i * b_step 
+	b_max += i * b_step
 
-c = []
+	a_min += j * a_step 
+	a_max += j * a_step
+	
+	poli.racional.muldiv.escreva('Resolução (px):\t',px_d)
+	poli.racional.muldiv.escreva(a_step, '/ 1px')
 
-b = b_min
-while len(c) < px_d:
-	linha = []
-	c.append(linha)
-#	print(len(c), b)
+	preto = [numpy.uint8(0)] * 3
 
-	a = a_min
-	while a <= a_max:
-		
+	c = []
 
-	#	z = 
-		
-		res = converge(polinomio, derivada_1, derivada_2, a + b)
+	b = b_min
+	while len(c) < px_d:
+		linha = []
+		c.append(linha)	
 
-		
-		
-		
-		linha.append(preto if res[1] else ([numpy.uint8(255 * res[2] // step_white)]) * 3)
+		a = a_min
+		while a <= a_max:					 
+			
+			res = converge(polinomio, derivada_1, derivada_2, a + b)						
+			
+			linha.append(preto if res[1] else ([numpy.uint8(255 * res[2] // step_white)]) * 3)
 
-		a += a_step
-	b += b_step
+			a += a_step
+		b += b_step
 
 
 
-c = numpy.array(c)
+	return numpy.array(c)
 
-pyplot.imshow(c)
-pyplot.show()
+def exibir_salvar (p, res = 512, *args1, **args2):
+	c = fract(p, res, *args1, **args2)
 
-from PIL import Image
-nome = sinal = ''
-for a in polinomio:
-	if a > 0:
-		nome += sinal
-	nome += str(a)
-	sinal = '+'
-nome += '_' + str(px_d) + '.png'	
-print(nome)
-Image.fromarray(c).save(nome)
+	pyplot.imshow(c)
+	pyplot.show()
+
+	
+	nome = sinal = ''
+	for a in p:
+		if a > 0:
+			nome += sinal
+		nome += str(a)
+		sinal = '+'
+	nome += '_' + str(res) + '.png'	
+	
+	Image.fromarray(c).save(nome)
+
+	print(nome)
+
+poli.racional.muldiv.escrever()
