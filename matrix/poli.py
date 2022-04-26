@@ -334,13 +334,20 @@ def l (x, n, k):
 	L = 1
 	for i in range(n):
 		if i != k:
-			L = mult(L, mult([-x[i],1],racional.frac(1,x[k] - x[i])))
+			m = div([-x[i],1],x[k] - x[i])[0]
+			racional.muldiv.escreva(i, racional.muldiv.q, m)
+			L = mult(L, m)
 	return L		
+
+
 def lagrange (x, y):	
+
 	n = min(len(x), len(y))
 	p = 0
 	for k in range(n):
-		p = soma(p, mult(y[k], l(x, n, k)))
+		m = l(x, n, k)
+		racional.muldiv.escreva(k, racional.muldiv.q, y[k], m)
+		p = soma(p, mult(y[k], m))
 	return p	
 
 
