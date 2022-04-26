@@ -34,7 +34,9 @@ def soma (a, b, formato = racional.muldiv.inteiro):
 
 	a = coeficientes(a, formato)
 	b = coeficientes(b, formato)
-	c = len(b)
+	if len(a) < len(b):
+		a,b = b,a
+	c = min(len(a), len(b))
 	while c > 0:
 		c -= 1
 		a[c] = formato(a[c] + b[c])
@@ -318,6 +320,28 @@ def newton_raphson (coef, x = 0, k = 10, met = newton):
 
 	return x	
 
+def falsa_posic (coef, a, b, k = 10): 
+	for i in range(k):
+		x = ((a * f(coef, b)) - (b * f(coef, a))) / (f(coef, b) -  f(coef, a))
+		racional.muldiv.escreva(i, racional.muldiv.q, [a, b], x)
+		if bolzano(coef, a, x):
+			b = x
+		else:	
+			a = x
+	return a, b		
+
+def l (x, n, k):
+	L = 1
+	for i in range(n):
+		if i != k:
+			L = mult(L, mult([-x[i],1],racional.frac(1,x[k] - x[i])))
+	return L		
+def lagrange (x, y):	
+	n = min(len(x), len(y))
+	p = 0
+	for k in range(n):
+		p = soma(p, mult(y[k], l(x, n, k)))
+	return p	
 
 
 hist = []
