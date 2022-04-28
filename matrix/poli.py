@@ -350,6 +350,17 @@ def lagrange (x, y):
 		p = soma(p, mult(y[k], m))
 	return p	
 
+def aitken_interpol (xk, yk, xj, yj):
+	return div(sub(mult(yk, [xj, -1]), mult(yj, [xk, -1])), xj - xk)[0]
+def aitken (x, y):
+	n = min(len(x), len(y))
+	for k in range(n - 1):
+		p = {}
+		for j in range(k + 1, n):
+			a = aitken_interpol(x[k], y[k], x[j], y[j])
+			p[j] = a
+		y = p	
+	return a	
 
 hist = []
 while __name__ == '__main__':
