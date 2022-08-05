@@ -29,13 +29,17 @@ def primal (A, b, c):
 
 	p = list(range(n-m,n))
 	q = list(range(n-m))
+	cB, cN = particionar(c, p, q)
 	B, N = particionar(A, p, q) 
 	Bi = det.inversa(B)
 	xB = det.matmul(det.transposta(b), Bi)[0]
 #	xB = det.transposta(det.resolver(B, b))[0]
-
+#	l = det.transposta(det.resolver(det.transposta(B), det.transposta(cB)))
+	l = det.matmul(cB, Bi)
+#	print(Bi)
 	
 	print('Partição básica inicial:\t',p)
+	#print(q)
 	
 	while True:
 		try:
@@ -55,17 +59,15 @@ def primal (A, b, c):
 					print(end='não ')
 				print('degenerada\n')
 
-			cB, cN = particionar(c, p, q)
 			print('Custos:\t',cB,cN)
-		#	l = det.transposta(det.resolver(det.transposta(B), det.transposta(cB)))
-			l = det.matmul(cB, Bi)
 
 			print('Multiplicador:\t',l)			
 
 			ln = det.matmul(l,N)
-			cN = det.somar(cN[0],ln[0],-1)
-			print('Custos relativos:\t',cN)
-			v = min(cN) 
+		#	print(ln)
+			cNr = det.somar(cN[0],ln[0],-1)
+			print('Custos relativos:\t',cNr)
+			v = min(cNr) 
 			print(v)
 
 			if v >= 0: # solução ótima
@@ -75,7 +77,7 @@ def primal (A, b, c):
 					print('Múltiplas soluções ótimas')
 				break
 
-			k = cN.index(v)
+			k = cNr.index(v)
 			aNk = particionar(N,[k],[])[0]
 
 		#	y = det.resolver(B, aNk)
@@ -92,6 +94,7 @@ def primal (A, b, c):
 			xB[e[1]] = e[0]
 			
 			p[e[1]], q[k] = q[k], p[e[1]]
+			cB[0][e[1]], cN[0][k] = cN[0][k], cB[0][e[1]] 
 
 			yield 
 		except KeyboardInterrupt:
@@ -104,14 +107,18 @@ def primal (A, b, c):
 	#	Bi = det.inversa(B) # atualizar inversa
 	#	'''
 		vl = Bi[e[1]]/y[e[1]][0]
-		print(vl)
+	#	print(vl)
 		for i in range(m):
 			if i != e[1]:
-				v = (y[i][0].num * vl) / y[i][0].den
-				print(v, Bi[i])
+				v = y[i][0] * vl
+	#			print(v, Bi[i])
 				Bi[i] -= v 					
 		Bi[e[1]] = vl		
 
+		l += cNr[k] * vl
+	#	print('Inversa:\n',det.inversa(B))
+	#	print('Inversa atualizada:\n',Bi)
+	#	print('Multiplicador atualizado:\t',l)#'''
 	x = [0] * n
 	for k in range(len(p)):
 		x[p[k]] = xB[k]
@@ -124,6 +131,9 @@ simplex = primal
 
 
 
+s = simplex([[2,1,1,0],[4,5,0,1]], [[5000],[15000]], [[-10,-7,0,0]])
+s = simplex([[1,2,3,0],[2,1,5,0],[1,2,1,1]],[[15],[20],[10]],[[-1,-2,-3,0]])
+s = simplex([[-4, 1, 1, 0], [2, -3, 0, 1]], [[4], [6]], [[-1, -2, 0, 0]])
 s = simplex([[1,1,1,0,0],[1,-1,0,1,0],[-1,1,0,0,1]],[[6],[4],[4]],[[-1,-1,0,0,0]])	
 while True:
 	print(next(s))

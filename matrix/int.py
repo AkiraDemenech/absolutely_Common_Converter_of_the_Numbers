@@ -1,4 +1,6 @@
+#import poli
 import math#, numpy as np 
+#from det import mostrar 
 
 ajuda = lambda: print('''\tAJUDA:\nrn1,pn1\nrn2,pn2\nrn3,pn3\nrn4,pn4\nrn5,pn5
 \n	edo(função(x, y), x0, y0, h, n) #dobra h e usa metade de n para runge-kutta 4
@@ -21,9 +23,11 @@ pn3 = [0.555556, 0.888889, 0.555556]
 
 rn4s = ['-0.86113631', '-0.33998104', '0.33998104', '0.86113631']
 rn4 = [float(r) for r in rn4s]
+#rn4r = [poli.racional.frac(r) for r in rn4s]
 
 pn4s = ['0.34785485', '0.65214515', '0.65214515', '0.34785485']
 pn4 = [float(r) for r in pn4s]
+#pn4r = [poli.racional.frac(r) for r in pn4s]
 
 rn5 = [-0.90618, -0.538469, 0 ,0.538469 ,0.90618]
 pn5 = [-0.236927, -0.478629, 0.56888 , 0.478629, 0.236927]
@@ -96,6 +100,8 @@ def quadratura (f, xa, xb, ya, yb, rx = rn4, wx = pn4, ry = None, wy = None):
 	if type(f) == str:
 		f = eval('lambda x,y:(' + f.lower().replace('^', '**') + ')') 
 
+#	ux = [nodos(r, xa, xb) for r in raizes]
+#	uy = [nodos(r, ya, yb) for r in raizes]
 
 	ux = []
 	uy = []
@@ -163,6 +169,7 @@ def quadratura (f, xa, xb, ya, yb, rx = rn4, wx = pn4, ry = None, wy = None):
 	return (s * (xb - xa) * (yb - ya)).real / 4 	
 
 
+#def quadratura_gauss (f, limites, raizes, pesos):	return 
 
 
 while __name__ == '__main__':

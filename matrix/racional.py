@@ -101,8 +101,12 @@ class frac:
 		
 
 	def __mul__ (self, fator):	
-		fator = frac(fator)
-		return frac(self.num * fator.num, fator.den * self.den)
+		try:
+			fator = frac(fator)			
+		except ValueError:	
+			return (fator * self.num) / self.den
+		return frac(self.num * fator.num, fator.den * self.den)	
+
 
 	def __truediv__ (self, divisor):	
 		return self * (~frac(divisor))
