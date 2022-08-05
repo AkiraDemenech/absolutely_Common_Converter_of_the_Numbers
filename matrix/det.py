@@ -1,6 +1,6 @@
 
 from numpy import array, matmul
-from muldiv import mmc,mdc,div, inteiro, escreva,escrever,q
+from muldiv import mmc,mdc,div, inteiro, escreva,escrever,q, salvar
 from racional import frac
 
 auto = False
@@ -111,7 +111,7 @@ def escalonar (m, diag = False, reduzir = False, fatores = None, formato = None)
 		if ln != cp:
 			escreva('A coluna pivô da linha',ln,'é',cp)		
 		
-		if reduzir:
+		if reduzir and escalonada[ln][cp] != 1:
 			escreva(q,'Multiplicando linha',ln,'por',1/escalonada[ln][cp])
 			escreva(escalonada[ln],'*',1/escalonada[ln][cp])
 			c = len(escalonada[ln])

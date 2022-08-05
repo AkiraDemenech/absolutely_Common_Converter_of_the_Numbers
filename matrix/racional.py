@@ -2,6 +2,38 @@
 import muldiv
 
 to_int = lambda x: x if type(x) == float and not x.is_integer() else int(x)
+def from_str (s, b = 10):
+	d = []
+	for c in s.split(','):
+		if len(c):
+			d.extend(c.split('.'))
+
+	if len(d) < 2: # não há vírgula ou ponto 
+		if len(d) and len(d[0]):	
+			return int(d[0])
+		return 0
+
+	i = s = a = ''	
+	for c in d.pop(-1): 		
+		if c.isdigit():
+			a += c
+			if c != '0':
+				s += a
+				a = ''
+
+	for c in d:			
+		for t in c.split():
+			i += t
+	z = int(i)	
+	if len(s):	
+		q = frac(int(s), b**len(s))			
+		if z < 0 or (z == 0 and i[0] == '-'):
+			return z - q
+		return z + q
+	return i	
+
+	
+
 
 class frac:
 
@@ -12,11 +44,17 @@ class frac:
 		return self.num, self.den
 
 	def __init__ (self, n, d = True):	
+		if type(n) == str:
+			n = from_str(n)
+		if type(d) == str:
+			d = from_str(d)	
+
 		if type(n) == frac:
 			d *= n.den
 			n = n.num
-
-		
+		if type(d) == frac:
+			n *= d.den
+			d = d.num			
 
 		if type(n) != float or n.is_integer():	
 			if n == None:
@@ -85,7 +123,7 @@ class frac:
 		return self.__mul__(fator)	
 
 	def __rpow__ (self, base):	
-		return base ** self.real
+		return frac(base) ** self.real
 
 	def __pow__ (self, expoente):		
 		s = self

@@ -28,7 +28,65 @@ def df (p):
 			continue
 	return d
 		
+class poli:
+
+	def __str__ (self, t = None):
+		if t == None:
+			t = self.var
+		p = ''
+		g = len(self.vetor)
+		while g > 0:
+			g -= 1
+			if g in self.graus:
+				if self.graus[g] == None or self.graus[g] >= 0:
+					p += '+' * (len(p) > 0)
+				p += str(self.graus[g])
+				if g:
+					p += self.mult + self.var + self.expo + str(g)			
+				p += ' '	
+		return p
+
+
+	def __init__ (self, coef, var = 'x', expo = '^', mult = ''):	
+
+		self.var = str(var)
+		self.expo = str(expo)
+		self.mult = str(mult)
+
+		self.vetor = coeficientes(coef)
+		self.graus = resumir(self.vetor)
+
+		self.derivada = None
+
+	def dp (self):	
+		if self.derivada == None:	
+			self.derivada = poli(df(self))
+		return self.derivada	
+
+	def __call__ (self, t):	
+		return f(self, t)
+
+	def __iter__ (self):	
+		return self.graus.__iter__()
+
+	def __len__ (self):	
+		return self.vetor.__len__()
 	
+	def __add__ (self, p):	
+		return poli(soma(self, p))
+
+	def __getitem__ (self, g):
+		if g in self.graus:
+			return self.graus[g]
+		return 0	
+
+		
+
+
+
+	
+
+
 
 def soma (a, b, formato = racional.muldiv.inteiro):
 
@@ -330,14 +388,13 @@ def falsa_posic (coef, a, b, k = 10):
 			a = x
 	return a, b		
 
-def l (x, n, k):
+def l (x, m, n, k):
 	L = 1
 	for i in range(n):
 		if i != k:
-			m = div([-x[i],1],x[k] - x[i])[0]
-			racional.muldiv.escreva(i, racional.muldiv.q, m)
-			L = mult(L, m)
-	return L		
+			m = racional.frac(m, x[k] - x[i])
+			L = mult(L, [-x[i],1])
+	return L, m		
 
 
 def lagrange (x, y):	
@@ -345,9 +402,9 @@ def lagrange (x, y):
 	n = min(len(x), len(y))
 	p = 0
 	for k in range(n):
-		m = l(x, n, k)
-		racional.muldiv.escreva(k, racional.muldiv.q, y[k], m)
-		p = soma(p, mult(y[k], m))
+		m = l(x, y[k], n, k)
+		racional.muldiv.escreva(k, racional.muldiv.q, m[1], m[0])
+		p = soma(p, mult(*m))
 	return p	
 
 def aitken_interpol (xk, yk, xj, yj):
