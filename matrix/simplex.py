@@ -59,7 +59,9 @@ def primal (A, b, c):
 					print(end='não ')
 				print('degenerada\n')
 
+			
 			print('Custos:\t',cB,cN)
+		
 
 			print('Multiplicador:\t',l)			
 
@@ -116,9 +118,15 @@ def primal (A, b, c):
 		Bi[e[1]] = vl		
 
 		l += cNr[k] * vl
+
+
+
+
+
 	#	print('Inversa:\n',det.inversa(B))
 	#	print('Inversa atualizada:\n',Bi)
 	#	print('Multiplicador atualizado:\t',l)#'''
+
 	x = [0] * n
 	for k in range(len(p)):
 		x[p[k]] = xB[k]
