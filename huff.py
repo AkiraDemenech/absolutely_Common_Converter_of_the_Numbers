@@ -55,10 +55,13 @@ def show_tree (tree, prefix = (), map = {}):
 
 	return map		
 
-contagem = {'b': 1, 'c': 6, 'a': 5, 'd': 3}
+#contagem = {'b': 1, 'c': 6, 'a': 5, 'd': 3}
+contagem = {'e': 4, 'a': 4, ' ': 7, 'n': 2, 't': 2, 'm': 2, 'i': 2, 'h': 2, 's': 2, 'f': 3, 'o': 1, 'u': 1, 'x': 1, 'p': 1, 'r': 1, 'l': 1}
 arvores = {}
 mapas = {}
+melhoria = 0
 for n in range(2, len(contagem) + 1):
+	print('\n\tBase/ordem',n)
 	arvores[n] = huffman(contagem, n)
 	mapas[n] = {}
 	show_tree(arvores[n], map = mapas[n])
@@ -68,12 +71,13 @@ for n in arvores:
 	fixo = 1
 	while n**fixo < len(contagem):
 		fixo += 1
-	print('\n\nBase',n)	
+	print('\n\nBase/ordem',n)	
 
 	fdt = sum(fixo * contagem[a] for a in contagem)
 	vdt = sum(len(mapas[n][a]) * contagem[a] for a in contagem)
 	vds = {len(mapas[n][a]) for a in mapas[n]}
 	m = 100 * (1 - (vdt / fdt))
+	melhoria = max(melhoria, m)
 	tabela[n] = fixo, fdt, vds, vdt, m
 	
 	print('Fixo:\n\t',fixo,'dígitos por símbolo')
@@ -83,7 +87,10 @@ for n in arvores:
 	print('\t', vdt, 'dígitos totais')
 	print(m,'% melhor')
 	
+	if m == melhoria:
+		print('Melhor até agora')
+	
 print(contagem, len(contagem))
 
 for n in tabela:
-	print(n, *tabela[n], sep='  \t')
+	print(n, *tabela[n], 'Melhor' if tabela[n][-1] == melhoria else '', sep='  \t')
